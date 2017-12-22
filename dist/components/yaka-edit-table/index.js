@@ -39,21 +39,21 @@ var _form2 = _interopRequireDefault(_form);
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-require('igroot/lib/modal/style/css');
+require('igroot/lib/modal/style');
 
-require('igroot/lib/table/style/css');
+require('igroot/lib/table/style');
 
-require('igroot/lib/button/style/css');
+require('igroot/lib/button/style');
 
-require('igroot/lib/spin/style/css');
+require('igroot/lib/spin/style');
 
-require('igroot/lib/message/style/css');
+require('igroot/lib/message/style');
 
-require('igroot/lib/upload/style/css');
+require('igroot/lib/upload/style');
 
-require('igroot/lib/icon/style/css');
+require('igroot/lib/icon/style');
 
-require('igroot/lib/form/style/css');
+require('igroot/lib/form/style');
 
 var _react = require('react');
 

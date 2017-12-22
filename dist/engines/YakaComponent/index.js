@@ -8,7 +8,7 @@ var _form = require('igroot/lib/form');
 
 var _form2 = _interopRequireDefault(_form);
 
-require('igroot/lib/form/style/css');
+require('igroot/lib/form/style');
 
 var _react = require('react');
 

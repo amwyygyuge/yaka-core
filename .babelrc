@@ -9,7 +9,7 @@
             "import",
             {
                 "libraryName": "igroot",
-                "style": "css"
+                "style": true
             }
         ]
     ]

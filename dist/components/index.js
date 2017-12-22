@@ -42,23 +42,23 @@ var _checkbox2 = _interopRequireDefault(_checkbox);
 
 var _EditTable$Switch$Edi;
 
-require('igroot/lib/input/style/css');
+require('igroot/lib/input/style');
 
-require('igroot/lib/form/style/css');
+require('igroot/lib/form/style');
 
-require('igroot/lib/card/style/css');
+require('igroot/lib/card/style');
 
-require('igroot/lib/col/style/css');
+require('igroot/lib/col/style');
 
-require('igroot/lib/row/style/css');
+require('igroot/lib/row/style');
 
-require('igroot/lib/table/style/css');
+require('igroot/lib/table/style');
 
-require('igroot/lib/input-number/style/css');
+require('igroot/lib/input-number/style');
 
-require('igroot/lib/button/style/css');
+require('igroot/lib/button/style');
 
-require('igroot/lib/checkbox/style/css');
+require('igroot/lib/checkbox/style');
 
 var _yakaEditTable = require('./yaka-edit-table');
 

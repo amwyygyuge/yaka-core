@@ -1,0 +1,62 @@
+.igroot-upload-excel {
+  display: inline-block;
+}
+.excel-map-container {
+  width: 98%;
+  margin: 0 auto;
+  padding: 10px;
+  overflow: hidden;
+  font-size: 12px;
+}
+.excel-map-container .excel-map-left,
+.excel-map-container .excel-map-right {
+  float: left;
+  width: 48%;
+  margin-top: 5px;
+}
+.excel-map-container .excel-map-left h2,
+.excel-map-container .excel-map-right h2 {
+  line-height: 24px;
+  font-size: 12px;
+}
+.excel-map-container .excel-map-right {
+  float: right;
+}
+.excel-map-container .excel-item {
+  display: block;
+  width: 100%;
+  padding: 0px 10px;
+  height: 24px;
+  line-height: 24px;
+  border: 1px solid #eee;
+  margin-bottom: 5px;
+  font-size: 12px;
+  background-color: #f1f1f1;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  color: #333;
+  font-weight: 400;
+  overflow: hidden;
+}
+.excel-map-container .excel-drag-item {
+  cursor: move;
+  background-color: #fefefe;
+  border: 1px dashed #ddd;
+}
+.excel-map-container .excel-upload-loading {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  z-index: 100;
+  top: 0;
+}
+.excel-map-container .excel-upload-loading .ant-spin-spinning {
+  margin-top: 48%;
+}
+.excel-map-container .excel-upload-loading .loading-txt {
+  color: #333;
+}

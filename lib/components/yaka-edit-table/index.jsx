@@ -4,6 +4,8 @@ import { Table, Form, Upload, message, Button, Icon, Modal, Spin } from 'igroot'
 import { SortableContainer, SortableElement, arrayMove } from 'react-sortable-hoc'
 import XLSX from 'xlsx'
 import './index.css'
+import uuidv4 from 'uuid/v4'
+
 const FormItem = Form.Item
 const SortableItem = SortableElement(({ value }) =>
   <li className="excel-item excel-drag-item">{value}</li>
@@ -47,26 +49,24 @@ export class YakaEditTable extends Component {
     if (nextProps.columns.length !== this.props.columns.length) {
       this.createColumns(nextProps)
     }
-    // if ((nextProps.value ? nextProps.value.length : 0) !== (this.props.value ? this.props.value.length : 0)) {
-    //     console.log("值渲染")
-    //     this.createDataSource(nextProps)
-    // }
   }
 
   createDataSource = (props) => {
     const { columns, value, ele, form, that, scrollWidth } = props
     this._value = this.createDafaultValue(columns)
     if (value !== null) {
-      value.map(val => {
-        val.key = Math.ceil(Math.random() * 1000)
-        return val
-      })
+      const values = value
+        .filter(val => val !== null)
+        .map(val => {
+          val.key = uuidv4()
+          return val
+        })
       this.setState({
-        dataSource: value
+        dataSource: values
       })
     } else {
       const val = []
-      val.push(Object.assign({ key: Math.ceil(Math.random() * 1000) }, this._value))
+      val.push(Object.assign({ key: uuidv4() }, this._value))
       this.setState({
         dataSource: val
       })
@@ -76,6 +76,7 @@ export class YakaEditTable extends Component {
   createColumns = (props) => {
     const { columns, ele, form, that, remove } = props
     const { getFieldDecorator } = form
+
     columns.map(col => {
       if (col.component && that.componentCheck(col)) {
         col.render = (text, row, index) => <FormItem style={{ marginBottom: 0 }}>
@@ -99,6 +100,7 @@ export class YakaEditTable extends Component {
       col.width = col.width ? col.width : null
       return col
     })
+
     if (remove !== false) {
       columns.push({
         title: '操作',
@@ -127,7 +129,8 @@ export class YakaEditTable extends Component {
 
   handleAdd = () => {
     const { dataSource } = this.state
-    dataSource.push(Object.assign({ key: Math.ceil(Math.random() * 1000) }, this._value))
+    dataSource.push(Object.assign({ key: uuidv4() }, this._value))
+
     this.setState({
       dataSource
     })
@@ -151,19 +154,21 @@ export class YakaEditTable extends Component {
 
   renderOpt = () => {
     const { uploadExcel, exportExcel } = this.props
-    const isNeedUpload = !(uploadExcel === false)
-    if (!isNeedUpload) return null
 
     return (
-      <div>
-        <div className="igroot-upload-excel" style={{ marginBottom: 10 }}>
-          <Upload beforeUpload={this.beforeUpload}>
-            <Button>
-              <Icon type="upload" size="small" /> 导入excel
-          </Button>
-          </Upload>
-        </div>
-        {exportExcel === false ? null : <Button onClick={this.xls} type='primary' style={{ float: 'right' }}>导出excel</Button>}
+      <div className="igroot-editor-table-opt-area">
+        {
+          (uploadExcel !== false) && <div className="igroot-upload-excel">
+            <Upload beforeUpload={this.beforeUpload}>
+              <Button>
+                <Icon type="upload" size="small" /> 导入excel
+            </Button>
+            </Upload>
+          </div>
+        }
+        {
+          (exportExcel !== false) && <Button onClick={this.handleExportXlsx} type='primary' style={{ float: 'right' }}>导出excel</Button>
+        }
       </div>
 
     )
@@ -338,7 +343,7 @@ export class YakaEditTable extends Component {
     )
   }
 
-  xls = () => {
+  handleExportXlsx = () => {
     //获取数据源
     const { name, columns } = this.state
     const dataSource = this.props.form.getFieldValue(name)
@@ -394,7 +399,7 @@ export class YakaEditTable extends Component {
     const AddButton = () =>
       <Button type='dashed' style={{ width: '100%' }} onClick={this.handleAdd}>
         新增行
-             </Button>
+      </Button>
     const { dataSource, columns } = this.state
     const { scrollWidth, add } = this.props
     return (

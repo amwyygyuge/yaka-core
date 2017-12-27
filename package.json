@@ -1,11 +1,11 @@
 {
   "name": "yaka-core",
-  "version": "0.0.4",
+  "version": "0.0.6",
   "description": "",
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "igroot": "^0.1.9",
+    "igroot": "^0.4.0",
     "igroot-fetch": "^1.1.2",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
@@ -31,4 +31,3 @@
     "babel-preset-stage-2": "^6.24.1"
   }
 }
-

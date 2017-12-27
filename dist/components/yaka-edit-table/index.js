@@ -67,6 +67,10 @@ var _xlsx2 = _interopRequireDefault(_xlsx);
 
 require('./index.css');
 
+var _v = require('uuid/v4');
+
+var _v2 = _interopRequireDefault(_v);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
@@ -128,10 +132,6 @@ var YakaEditTable = exports.YakaEditTable = function (_Component) {
       if (nextProps.columns.length !== _this.props.columns.length) {
         _this.createColumns(nextProps);
       }
-      // if ((nextProps.value ? nextProps.value.length : 0) !== (this.props.value ? this.props.value.length : 0)) {
-      //     console.log("值渲染")
-      //     this.createDataSource(nextProps)
-      // }
     }, _this.createDataSource = function (props) {
       var columns = props.columns,
           value = props.value,
@@ -142,16 +142,18 @@ var YakaEditTable = exports.YakaEditTable = function (_Component) {
 
       _this._value = _this.createDafaultValue(columns);
       if (value !== null) {
-        value.map(function (val) {
-          val.key = Math.ceil(Math.random() * 1000);
+        var values = value.filter(function (val) {
+          return val !== null;
+        }).map(function (val) {
+          val.key = (0, _v2.default)();
           return val;
         });
         _this.setState({
-          dataSource: value
+          dataSource: values
         });
       } else {
         var val = [];
-        val.push(Object.assign({ key: Math.ceil(Math.random() * 1000) }, _this._value));
+        val.push(Object.assign({ key: (0, _v2.default)() }, _this._value));
         _this.setState({
           dataSource: val
         });
@@ -163,6 +165,7 @@ var YakaEditTable = exports.YakaEditTable = function (_Component) {
           that = props.that,
           remove = props.remove;
       var getFieldDecorator = form.getFieldDecorator;
+
 
       columns.map(function (col) {
         if (col.component && that.componentCheck(col)) {
@@ -193,6 +196,7 @@ var YakaEditTable = exports.YakaEditTable = function (_Component) {
         col.width = col.width ? col.width : null;
         return col;
       });
+
       if (remove !== false) {
         columns.push({
           title: '操作',
@@ -227,7 +231,8 @@ var YakaEditTable = exports.YakaEditTable = function (_Component) {
     }, _this.handleAdd = function () {
       var dataSource = _this.state.dataSource;
 
-      dataSource.push(Object.assign({ key: Math.ceil(Math.random() * 1000) }, _this._value));
+      dataSource.push(Object.assign({ key: (0, _v2.default)() }, _this._value));
+
       _this.setState({
         dataSource: dataSource
       });
@@ -253,15 +258,13 @@ var YakaEditTable = exports.YakaEditTable = function (_Component) {
           uploadExcel = _this$props.uploadExcel,
           exportExcel = _this$props.exportExcel;
 
-      var isNeedUpload = !(uploadExcel === false);
-      if (!isNeedUpload) return null;
 
       return _react2.default.createElement(
         'div',
-        null,
-        _react2.default.createElement(
+        { className: 'igroot-editor-table-opt-area' },
+        uploadExcel !== false && _react2.default.createElement(
           'div',
-          { className: 'igroot-upload-excel', style: { marginBottom: 10 } },
+          { className: 'igroot-upload-excel' },
           _react2.default.createElement(
             _upload2.default,
             { beforeUpload: _this.beforeUpload },
@@ -273,9 +276,9 @@ var YakaEditTable = exports.YakaEditTable = function (_Component) {
             )
           )
         ),
-        exportExcel === false ? null : _react2.default.createElement(
+        exportExcel !== false && _react2.default.createElement(
           _button2.default,
-          { onClick: _this.xls, type: 'primary', style: { float: 'right' } },
+          { onClick: _this.handleExportXlsx, type: 'primary', style: { float: 'right' } },
           '\u5BFC\u51FAexcel'
         )
       );
@@ -469,7 +472,7 @@ var YakaEditTable = exports.YakaEditTable = function (_Component) {
           )
         )
       );
-    }, _this.xls = function () {
+    }, _this.handleExportXlsx = function () {
       //获取数据源
       var _this$state3 = _this.state,
           name = _this$state3.name,

@@ -1,9 +1,9 @@
 .w-e-menu {
-  z-index: 1001 !important;
+  z-index: 11 !important;
 }
 
 .w-e-text-container {
-  z-index: 1000 !important;
+  z-index: 10 !important;
 }
 
 .yaka-editor-container {
@@ -16,7 +16,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 1002;
+  z-index: 12;
   background-color: #ccc;
   opacity: 0.2;
 }

@@ -1,11 +1,9 @@
-
 import React, { Component } from 'react'
 import { Table, Form, Upload, message, Button, Icon, Modal, Spin } from 'igroot'
 import { SortableContainer, SortableElement, arrayMove } from 'react-sortable-hoc'
 import XLSX from 'xlsx'
-import './index.css'
 import uuidv4 from 'uuid/v4'
-
+import './index.css'
 const FormItem = Form.Item
 const SortableItem = SortableElement(({ value }) =>
   <li className="excel-item excel-drag-item">{value}</li>
@@ -295,10 +293,14 @@ export class YakaEditTable extends Component {
         addData.push(item)
       })
 
+      const isOne = dataSource.length === 1
+
       this.setState({
-        dataSource: dataSource.length === 1 ? addData : dataSource.concat(addData),
+        dataSource: dataSource.concat(addData),
         visible: false,
         uploadLoading: false
+      }, () => {
+        isOne && this.handleDetlete(0)
       })
 
       clearTimeout(timer)

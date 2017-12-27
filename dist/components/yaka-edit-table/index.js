@@ -65,11 +65,11 @@ var _xlsx = require('xlsx');
 
 var _xlsx2 = _interopRequireDefault(_xlsx);
 
-require('./index.css');
-
 var _v = require('uuid/v4');
 
 var _v2 = _interopRequireDefault(_v);
+
+require('./index.css');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -402,10 +402,14 @@ var YakaEditTable = exports.YakaEditTable = function (_Component) {
           addData.push(item);
         });
 
+        var isOne = dataSource.length === 1;
+
         _this.setState({
-          dataSource: dataSource.length === 1 ? addData : dataSource.concat(addData),
+          dataSource: dataSource.concat(addData),
           visible: false,
           uploadLoading: false
+        }, function () {
+          isOne && _this.handleDetlete(0);
         });
 
         clearTimeout(timer);

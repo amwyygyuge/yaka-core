@@ -84,7 +84,7 @@ exports.default = _form2.default.create({
         if (IgrootConfigFormThis.props.edit === true) {
             var editNow = IgrootConfigFormThis.props.form.getFieldsValue();
             Object.assign(editNow, values);
-            setLocalStorage('editformNow', JSON.stringify(editNow));
+            setStorageItem('editformNow', JSON.stringify(editNow));
         }
     }
 })(YakaFormOnFlow);

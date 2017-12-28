@@ -11,7 +11,7 @@ export class YakaSelect extends Component {
       const optionChildren = option.props.children.toLowerCase()
       let  isMatch = optionValue.indexOf(inputText) >= 0 || optionChildren.indexOf(inputText) >= 0
 
-      if (searchKeys.length) {
+      if (searchKeys && searchKeys.length) {
         const optionItem = options.filter(item => {
           return item.value.toLowerCase() === optionValue
         })[0]

@@ -53,7 +53,7 @@ var YakaSelect = exports.YakaSelect = function (_Component) {
             var optionChildren = option.props.children.toLowerCase();
             var isMatch = optionValue.indexOf(inputText) >= 0 || optionChildren.indexOf(inputText) >= 0;
 
-            if (searchKeys.length) {
+            if (searchKeys && searchKeys.length) {
                 var optionItem = options.filter(function (item) {
                     return item.value.toLowerCase() === optionValue;
                 })[0];

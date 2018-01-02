@@ -70,7 +70,9 @@ var _yakaSelect = require('./yaka-select/');
 
 var _yakaDatepicker = require('./yaka-datepicker/');
 
-var _yakaTimepicker = require('./yaka-timepicker//');
+var _yakaTimepicker = require('./yaka-timepicker/');
+
+var _yakaTextarea = require('./yaka-textarea/');
 
 var _yakaRadio = require('./yaka-radio/');
 
@@ -78,8 +80,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var CheckboxGroup = _checkbox2.default.Group,
-    TextArea = _input2.default.TextArea;
+var CheckboxGroup = _checkbox2.default.Group;
 
 exports.default = (_EditTable$Switch$Edi = {
   EditTable: _yakaEditTable.YakaEditTable,
@@ -98,4 +99,4 @@ exports.default = (_EditTable$Switch$Edi = {
   Card: _card2.default,
   Form: _form2.default,
   DatePicker: _yakaDatepicker.YakaDatePicker
-}, _defineProperty(_EditTable$Switch$Edi, 'Input', _input2.default), _defineProperty(_EditTable$Switch$Edi, 'TextArea', TextArea), _EditTable$Switch$Edi);
+}, _defineProperty(_EditTable$Switch$Edi, 'Input', _input2.default), _defineProperty(_EditTable$Switch$Edi, 'TextArea', _yakaTextarea.YakaTextArea), _EditTable$Switch$Edi);

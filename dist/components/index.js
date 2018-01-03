@@ -72,8 +72,6 @@ var _yakaDatepicker = require('./yaka-datepicker/');
 
 var _yakaTimepicker = require('./yaka-timepicker/');
 
-var _yakaTextarea = require('./yaka-textarea/');
-
 var _yakaRadio = require('./yaka-radio/');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -99,4 +97,4 @@ exports.default = (_EditTable$Switch$Edi = {
   Card: _card2.default,
   Form: _form2.default,
   DatePicker: _yakaDatepicker.YakaDatePicker
-}, _defineProperty(_EditTable$Switch$Edi, 'Input', _input2.default), _defineProperty(_EditTable$Switch$Edi, 'TextArea', _yakaTextarea.YakaTextArea), _EditTable$Switch$Edi);
+}, _defineProperty(_EditTable$Switch$Edi, 'Input', _input2.default), _defineProperty(_EditTable$Switch$Edi, 'TextArea', _input2.default.TextArea), _EditTable$Switch$Edi);

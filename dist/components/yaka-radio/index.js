@@ -33,12 +33,31 @@ var Radio = exports.Radio = function (_Component) {
     _inherits(Radio, _Component);
 
     function Radio() {
+        var _ref;
+
+        var _temp, _this, _ret;
+
         _classCallCheck(this, Radio);
 
-        return _possibleConstructorReturn(this, (Radio.__proto__ || Object.getPrototypeOf(Radio)).apply(this, arguments));
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+        }
+
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Radio.__proto__ || Object.getPrototypeOf(Radio)).call.apply(_ref, [this].concat(args))), _this), _this.first = false, _temp), _possibleConstructorReturn(_this, _ret);
     }
 
     _createClass(Radio, [{
+        key: 'componentWillReceiveProps',
+        value: function componentWillReceiveProps(nextProps) {
+            var value = nextProps.value,
+                onChange = nextProps.onChange;
+
+            if (!this.first && value !== '' && onChange) {
+                this.first = true;
+                onChange({ target: { value: value } });
+            }
+        }
+    }, {
         key: 'render',
         value: function render() {
             var _props = this.props,

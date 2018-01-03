@@ -103,7 +103,6 @@ var Yaka = exports.Yaka = function (_Component) {
                 if (key.indexOf('$') > -1) {
                     var formKey = key.slice(1, key.length).split('.');
                     var value = initData[formKey[0]] || '';
-
                     this.logicState[formKey[0]] = {};
                     this.logicState[formKey[0]][formKey[1]] = value;
                 }

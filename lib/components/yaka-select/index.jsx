@@ -23,7 +23,6 @@ export class YakaSelect extends Component {
 
       return isMatch
     }
-
     render() {
         const props = this.props
         const children = []

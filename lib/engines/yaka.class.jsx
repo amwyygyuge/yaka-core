@@ -271,7 +271,6 @@ export class Yaka extends Component {
             if (key.indexOf('$') > -1) {
                 const formKey = key.slice(1, key.length).split('.')
                 const value = initData[formKey[0]] || ''
-
                 this.logicState[formKey[0]] = {}
                 this.logicState[formKey[0]][formKey[1]] = value
             }

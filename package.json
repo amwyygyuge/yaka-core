@@ -1,6 +1,6 @@
 {
   "name": "yaka-core",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "",
   "author": "",
   "license": "MIT",
@@ -11,7 +11,7 @@
     "react-dom": "^16.0.0",
     "react-sortable-hoc": "^0.6.8",
     "uuid": "^3.1.0",
-    "wangeditor": "^3.0.15",
+    "wangeditor": "3.0.12",
     "xlsx": "^0.11.13"
   },
   "engines": {

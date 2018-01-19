@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react'
+import { Row, Col, Form, Button } from 'igroot'
 export default function (ele, that) {
-    const { Row, Col, Form, Button } = that.components
     const FormItem = Form.Item
     const { colWidth, labelCol, wrapperCol, gutter, onSubmit, title } = ele.props
     const rowNum = Math.floor(24 / colWidth)

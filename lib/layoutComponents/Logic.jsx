@@ -1,7 +1,6 @@
 import React from 'react'
 export default function (ele, that) {
     const { value, components } = that.bindingProps(ele)
-    console.log(value, 'value', that.form.getFieldValue())
     if (Array.isArray(components)) {
         return <div>
             {components.map(component => {

@@ -47,16 +47,25 @@ var YakaForm = exports.YakaForm = function (_Yaka) {
             args[_key] = arguments[_key];
         }
 
-        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = YakaForm.__proto__ || Object.getPrototypeOf(YakaForm)).call.apply(_ref, [this].concat(args))), _this), _this.onSubmit = function () {
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = YakaForm.__proto__ || Object.getPrototypeOf(YakaForm)).call.apply(_ref, [this].concat(args))), _this), _this.componentDidMount = function () {
+            //载入初始表单数据
+            _this.initForm();
+            _this.setDidComponentConfig();
+        }, _this.initForm = function () {
+            _this.form.setFieldsValue(_this.initData);
+        }, _this.onSubmit = function () {
             var validateFields = _this.form.validateFields;
+            var onSubmit = _this.props.onSubmit;
 
             validateFields(function (err, val) {
                 if (err) {
-                    console.log(err);
+                    onSubmit && onSubmit(val);
                 } else {
-                    console.log(val);
+                    onSubmit && onSubmit(val);
                 }
             });
+        }, _this.setDidComponentConfig = function () {
+            onGetForm && onGetForm(_this.form);
         }, _temp), _possibleConstructorReturn(_this, _ret);
     }
 
@@ -67,7 +76,7 @@ var YakaForm = exports.YakaForm = function (_Yaka) {
                 'div',
                 null,
                 this.elementWalk(this.layouts),
-                _react2.default.createElement(
+                this.props.onSubmit ? _react2.default.createElement(
                     'div',
                     { style: { textAlign: 'center', margin: '15px 0' } },
                     _react2.default.createElement(
@@ -75,7 +84,7 @@ var YakaForm = exports.YakaForm = function (_Yaka) {
                         { type: 'primary', onClick: this.onSubmit },
                         '\u63D0\u4EA4'
                     )
-                )
+                ) : null
             );
         }
     }]);

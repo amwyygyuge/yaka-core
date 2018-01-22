@@ -1,5 +1,7 @@
 import React, { Component, Children } from 'react'
 import { Button, Form } from 'igroot'
+import defaultComponents from './../components/';
+import defaultLayoutComponents from './../layoutComponents/';
 import BsFetch from 'igroot-fetch'
 import extend from './../extend/'
 export class Yaka extends Component {
@@ -11,8 +13,8 @@ export class Yaka extends Component {
         this.config = config
         this.layouts = config.layout
         this.dataMap = config.dataMap || {}
-        this.components = components
-        this.layoutComponents = layoutComponents
+        this.components = components ? components : defaultComponents
+        this.layoutComponents = layoutComponents ? layoutComponents : defaultLayoutComponents
         this.form = form
         this.initData = config.initData || {}
         this.state = config.global || {}

@@ -1,8 +1,8 @@
 
 import React from 'react'
-
+import { Form } from 'igroot';
 export default function (ele, that) {
-    const { Editor, Form } = that.components
+    const { Editor } = that.components
     const FormItem = Form.Item
     const { getFieldDecorator } = that.form
     const props = that.bindingProps(ele)

@@ -65,6 +65,8 @@ var YakaForm = exports.YakaForm = function (_Yaka) {
                 }
             });
         }, _this.setDidComponentConfig = function () {
+            var onGetForm = _this.props.onGetForm;
+
             onGetForm && onGetForm(_this.form);
         }, _temp), _possibleConstructorReturn(_this, _ret);
     }

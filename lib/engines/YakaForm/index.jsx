@@ -30,6 +30,7 @@ export class YakaForm extends Yaka {
         })
     }
     setDidComponentConfig = () => {
+        const { onGetForm } = this.props
         onGetForm && onGetForm(this.form)
     }
 }

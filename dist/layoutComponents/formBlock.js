@@ -4,14 +4,20 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-exports.default = function (ele, that) {
-    var _that$components = that.components,
-        Row = _that$components.Row,
-        Col = _that$components.Col,
-        Form = _that$components.Form,
-        Button = _that$components.Button;
+var _row = require('igroot/lib/row');
 
-    var FormItem = Form.Item;
+var _row2 = _interopRequireDefault(_row);
+
+var _col = require('igroot/lib/col');
+
+var _col2 = _interopRequireDefault(_col);
+
+var _form = require('igroot/lib/form');
+
+var _form2 = _interopRequireDefault(_form);
+
+exports.default = function (ele, that) {
+    var FormItem = _form2.default.Item;
     var _ele$props = ele.props,
         colWidth = _ele$props.colWidth,
         labelCol = _ele$props.labelCol,
@@ -40,16 +46,16 @@ exports.default = function (ele, that) {
     };
     var props = that.bindingProps(ele);
     return _react2.default.createElement(
-        Row,
+        _row2.default,
         { gutter: gutter ? gutter : 0, style: styles.block, key: ele.name },
         _children.map(function (row, index) {
             return _react2.default.createElement(
-                Row,
+                _row2.default,
                 { gutter: gutter ? gutter : 0, key: '' + ele.name + index },
                 row.map(function (col, subindex) {
                     var colProps = that.bindingProps(col);
                     return _react2.default.createElement(
-                        Col,
+                        _col2.default,
                         {
                             span: col.col && col.col || colWidth,
                             key: '' + ele.name + index + subindex },
@@ -79,6 +85,12 @@ exports.default = function (ele, that) {
         })
     );
 };
+
+require('igroot/lib/row/style');
+
+require('igroot/lib/col/style');
+
+require('igroot/lib/form/style');
 
 var _react = require('react');
 

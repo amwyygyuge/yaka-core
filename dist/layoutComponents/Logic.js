@@ -9,7 +9,6 @@ exports.default = function (ele, that) {
         value = _that$bindingProps.value,
         components = _that$bindingProps.components;
 
-    console.log(value, 'value', that.form.getFieldValue());
     if (Array.isArray(components)) {
         return _react2.default.createElement(
             'div',

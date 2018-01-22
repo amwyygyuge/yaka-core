@@ -4,11 +4,15 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-exports.default = function (ele, that) {
-    var _that$components = that.components,
-        Col = _that$components.Col,
-        Row = _that$components.Row;
+var _row = require('igroot/lib/row');
 
+var _row2 = _interopRequireDefault(_row);
+
+var _col = require('igroot/lib/col');
+
+var _col2 = _interopRequireDefault(_col);
+
+exports.default = function (ele, that) {
     var props = that.bindingProps(ele);
     if ('style' in props) {
         Object.assign({ marginTop: 15 }, props.style);
@@ -16,17 +20,21 @@ exports.default = function (ele, that) {
         props.style = { marginTop: 15 };
     }
     return _react2.default.createElement(
-        Row,
+        _row2.default,
         props,
         ele.children.map(function (col, index) {
             return _react2.default.createElement(
-                Col,
+                _col2.default,
                 { span: col.col && col.col || 0, key: ele.name + '-' + index },
                 that.elementWalk([col])
             );
         })
     );
 };
+
+require('igroot/lib/row/style');
+
+require('igroot/lib/col/style');
 
 var _react = require('react');
 

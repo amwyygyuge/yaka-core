@@ -4,12 +4,14 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-exports.default = function (ele, that) {
-    var _that$components = that.components,
-        Editor = _that$components.Editor,
-        Form = _that$components.Form;
+var _form = require('igroot/lib/form');
 
-    var FormItem = Form.Item;
+var _form2 = _interopRequireDefault(_form);
+
+exports.default = function (ele, that) {
+    var Editor = that.components.Editor;
+
+    var FormItem = _form2.default.Item;
     var getFieldDecorator = that.form.getFieldDecorator;
 
     var props = that.bindingProps(ele);
@@ -22,6 +24,8 @@ exports.default = function (ele, that) {
         })(_react2.default.createElement(Editor, props))
     );
 };
+
+require('igroot/lib/form/style');
 
 var _react = require('react');
 

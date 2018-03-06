@@ -176,7 +176,7 @@ var YakaEditTable = exports.YakaEditTable = function (_Component) {
                             getFieldDecorator(ele.name + '[' + index + '].' + col.name, {
                                 initialValue: text ? text : null,
                                 rules: col.rules ? col.rules : null
-                            })(that.elementWalk([col])[0])
+                            })(that.elementWalk([col, that.yakaApis])[0])
                         );
                     };
 

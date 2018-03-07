@@ -12,8 +12,14 @@ var _col = require('igroot/lib/col');
 
 var _col2 = _interopRequireDefault(_col);
 
-exports.default = function (ele, that) {
-    var props = that.bindingProps(ele);
+exports.default = function (ele, _ref) {
+    var yakaApis = _ref.yakaApis,
+        form = _ref.form,
+        bindingProps = _ref.bindingProps,
+        componentCheck = _ref.componentCheck,
+        elementWalk = _ref.elementWalk;
+
+    var props = bindingProps(ele, yakaApis);
     if ('style' in props) {
         Object.assign({ marginTop: 15 }, props.style);
     } else {
@@ -26,7 +32,7 @@ exports.default = function (ele, that) {
             return _react2.default.createElement(
                 _col2.default,
                 { span: col.col && col.col || 0, key: ele.name + '-' + index },
-                that.elementWalk([col])
+                elementWalk([col], yakaApis)
             );
         })
     );

@@ -8,13 +8,20 @@ var _form = require('igroot/lib/form');
 
 var _form2 = _interopRequireDefault(_form);
 
-exports.default = function (ele, that) {
-    var Editor = that.components.Editor;
+exports.default = function (ele, _ref) {
+    var elementWalk = _ref.elementWalk,
+        componentCheck = _ref.componentCheck,
+        initData = _ref.initData,
+        components = _ref.components,
+        form = _ref.form,
+        bindingProps = _ref.bindingProps,
+        yakaApis = _ref.yakaApis;
+    var Editor = components.Editor;
 
     var FormItem = _form2.default.Item;
-    var getFieldDecorator = that.form.getFieldDecorator;
+    var getFieldDecorator = form.getFieldDecorator;
 
-    var props = that.bindingProps(ele);
+    var props = bindingProps(ele, yakaApis);
     return _react2.default.createElement(
         FormItem,
         { key: ele.name },

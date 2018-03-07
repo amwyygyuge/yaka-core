@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react'
 import { Row, Col, Form, Button } from 'igroot'
-export default function (ele, that) {
+export default function (ele, { yakaApis, form, bindingProps, componentCheck, elementWalk }) {
     const FormItem = Form.Item
     const { colWidth, labelCol, wrapperCol, gutter, onSubmit, title } = ele.props
     const rowNum = Math.floor(24 / colWidth)
@@ -10,7 +10,8 @@ export default function (ele, that) {
     for (let i = 0; i < times; ++i) {
         _children.push(ele.children.slice(i * rowNum, (i + 1) * rowNum))
     }
-    const { getFieldDecorator } = that.form
+    console.log(form);
+    const { getFieldDecorator } = form
     const styles = {
         title: {
             fontSize: 18,
@@ -21,14 +22,14 @@ export default function (ele, that) {
             background: '#fff'
         }
     }
-    const props = that.bindingProps(ele)
+    const props = bindingProps(ele, yakaApis)
     return <Row gutter={gutter ? gutter : 0} style={styles.block} key={ele.name}>
         {
             _children.map((row, index) =>
                 <Row gutter={gutter ? gutter : 0} key={`${ele.name}${index}`}>
                     {
                         row.map((col, subindex) => {
-                            const colProps = that.bindingProps(col)
+                            const colProps = bindingProps(col, yakaApis)
                             return <Col
                                 span={col.col && col.col || colWidth}
                                 key={`${ele.name}${index}${subindex}`}>
@@ -43,12 +44,12 @@ export default function (ele, that) {
                                         }}
                                     >
                                         {
-                                            col.component && that.componentCheck(col) ? getFieldDecorator(`${col.name}`, {
+                                            col.component && componentCheck(col) ? getFieldDecorator(`${col.name}`, {
                                                 initialValue: col.value ? col.value : null,
                                                 rules: col.rules ? col.rules : null
                                             })(
-                                                that.elementWalk([col])[0]
-                                                ) : <div>非法表单组件</div>
+                                                elementWalk([col], yakaApis)[0]
+                                            ) : <div>非法表单组件</div>
                                         }
                                     </FormItem>
                                 }

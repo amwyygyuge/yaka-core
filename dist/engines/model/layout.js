@@ -61,6 +61,9 @@ var bindingProps = function bindingProps(ele, yakaApis) {
     return props;
 };
 var componentFilter = function componentFilter(ele, yakaApis) {
+    if (!yakaApis) {
+        console.log(ele);
+    }
     var getState = yakaApis.getState,
         getComponent = yakaApis.getComponent,
         getForm = yakaApis.getForm,
@@ -79,7 +82,7 @@ var componentFilter = function componentFilter(ele, yakaApis) {
 
 
     if (layoutComponents[ele.component]) {
-        return layoutComponents[ele.component](ele, { elementWalk: elementWalk, componentFilter: componentFilter, bindingProps: bindingProps, bindingText: bindingText, componentCheck: componentCheck });
+        return layoutComponents[ele.component](ele, { elementWalk: elementWalk, componentFilter: componentFilter, bindingProps: bindingProps, bindingText: bindingText, componentCheck: componentCheck, yakaApis: yakaApis, form: getForm() });
     }
     //组件扩展
     if (extend[ele.component]) {

@@ -1,11 +1,11 @@
 
 import React from 'react'
 import { Form } from 'igroot';
-export default function (ele, that) {
-    const { Editor } = that.components
+export default function (ele, { elementWalk, componentCheck, initData, components, form, bindingProps, yakaApis }) {
+    const { Editor } = components
     const FormItem = Form.Item
-    const { getFieldDecorator } = that.form
-    const props = that.bindingProps(ele)
+    const { getFieldDecorator } = form
+    const props = bindingProps(ele, yakaApis)
     return <FormItem key={ele.name}>
         {
             getFieldDecorator(`${ele.name}`, {
@@ -13,7 +13,7 @@ export default function (ele, that) {
                 rules: ele.rules ? ele.rules : null
             })(
                 <Editor {...props} />
-                )
+            )
         }
     </FormItem>
 }

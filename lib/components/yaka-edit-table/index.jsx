@@ -50,7 +50,7 @@ export class YakaEditTable extends Component {
     }
 
     createDataSource = (props) => {
-        const { columns, value, ele, form, that, scrollWidth } = props
+        const { columns, value } = props
         this._value = this.createDafaultValue(columns)
         if (value !== null) {
             const values = value
@@ -72,18 +72,18 @@ export class YakaEditTable extends Component {
     }
 
     createColumns = (props) => {
-        const { columns, ele, form, that, remove } = props
+        const { columns, ele, form, elementWalk, yakaApis, componentCheck, remove } = props
         const { getFieldDecorator } = form
 
         columns.map(col => {
-            if (col.component && that.componentCheck(col)) {
+            if (col.component && componentCheck(col)) {
                 col.render = (text, row, index) => <FormItem style={{ marginBottom: 0 }}>
                     {
                         getFieldDecorator(`${ele.name}[${index}].${col.name}`, {
                             initialValue: text ? text : null,
                             rules: col.rules ? col.rules : null
                         })(
-                            that.elementWalk([col, that.yakaApis])[0]
+                            elementWalk([col], yakaApis)[0]
                         )
                     }
                 </FormItem>

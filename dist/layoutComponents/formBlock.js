@@ -16,7 +16,13 @@ var _form = require('igroot/lib/form');
 
 var _form2 = _interopRequireDefault(_form);
 
-exports.default = function (ele, that) {
+exports.default = function (ele, _ref) {
+    var yakaApis = _ref.yakaApis,
+        form = _ref.form,
+        bindingProps = _ref.bindingProps,
+        componentCheck = _ref.componentCheck,
+        elementWalk = _ref.elementWalk;
+
     var FormItem = _form2.default.Item;
     var _ele$props = ele.props,
         colWidth = _ele$props.colWidth,
@@ -32,7 +38,8 @@ exports.default = function (ele, that) {
     for (var i = 0; i < times; ++i) {
         _children.push(ele.children.slice(i * rowNum, (i + 1) * rowNum));
     }
-    var getFieldDecorator = that.form.getFieldDecorator;
+    console.log(form);
+    var getFieldDecorator = form.getFieldDecorator;
 
     var styles = {
         title: {
@@ -44,7 +51,7 @@ exports.default = function (ele, that) {
             background: '#fff'
         }
     };
-    var props = that.bindingProps(ele);
+    var props = bindingProps(ele, yakaApis);
     return _react2.default.createElement(
         _row2.default,
         { gutter: gutter ? gutter : 0, style: styles.block, key: ele.name },
@@ -53,7 +60,7 @@ exports.default = function (ele, that) {
                 _row2.default,
                 { gutter: gutter ? gutter : 0, key: '' + ele.name + index },
                 row.map(function (col, subindex) {
-                    var colProps = that.bindingProps(col);
+                    var colProps = bindingProps(col, yakaApis);
                     return _react2.default.createElement(
                         _col2.default,
                         {
@@ -70,10 +77,10 @@ exports.default = function (ele, that) {
                                     span: col.wrapperCol ? col.wrapperCol : wrapperCol
                                 }
                             },
-                            col.component && that.componentCheck(col) ? getFieldDecorator('' + col.name, {
+                            col.component && componentCheck(col) ? getFieldDecorator('' + col.name, {
                                 initialValue: col.value ? col.value : null,
                                 rules: col.rules ? col.rules : null
-                            })(that.elementWalk([col])[0]) : _react2.default.createElement(
+                            })(elementWalk([col], yakaApis)[0]) : _react2.default.createElement(
                                 'div',
                                 null,
                                 '\u975E\u6CD5\u8868\u5355\u7EC4\u4EF6'

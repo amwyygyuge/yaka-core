@@ -1,18 +1,18 @@
 import React from 'react'
-export default function (ele, that) {
-    const { value, components } = that.bindingProps(ele)
+export default function (ele, { yakaApis, form, bindingProps, componentCheck, elementWalk }) {
+    const { value, components } = bindingProps(ele, yakaApis)
     if (Array.isArray(components)) {
         return <div>
             {components.map(component => {
                 if (Array.isArray(value)) {
                     if (value.some(val => val === component.value)) {
-                        return that.elementWalk(Array.isArray(component.component) ? component.component : [component.component])
+                        return elementWalk(Array.isArray(component.component) ? component.component : [component.component], yakaApis)
                     } else {
                         return null
                     }
                 } else {
                     if (value === component.value) {
-                        return that.elementWalk(Array.isArray(component.component) ? component.component : [component.component])
+                        return elementWalk(Array.isArray(component.component) ? component.component : [component.component], yakaApis)
                     } else {
                         return null
                     }
@@ -21,7 +21,7 @@ export default function (ele, that) {
         </div>
     } else {
         return <div>
-            {components.value === value ? that.elementWalk(Array.isArray(components.component) ? components.component : [components.component]) : null}
+            {components.value === value ? elementWalk(Array.isArray(components.component) ? components.component : [components.component], yakaApis) : null}
         </div>
     }
 

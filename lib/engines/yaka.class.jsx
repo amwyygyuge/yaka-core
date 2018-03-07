@@ -29,7 +29,7 @@ export class Yaka extends Component {
             formValueGettingFunction: (key) => this.form.getFieldValue(key),
             getState: () => this.state,
             getFunction: () => this.functions,
-            getForm: () => this.from,
+            getForm: () => this.form,
             getComponent: () => {
                 return { components: this.components, layoutComponents: this.layoutComponents, extend: this.extend }
             },

@@ -4,10 +4,16 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-exports.default = function (ele, that) {
-    var _that$bindingProps = that.bindingProps(ele),
-        value = _that$bindingProps.value,
-        components = _that$bindingProps.components;
+exports.default = function (ele, _ref) {
+    var yakaApis = _ref.yakaApis,
+        form = _ref.form,
+        bindingProps = _ref.bindingProps,
+        componentCheck = _ref.componentCheck,
+        elementWalk = _ref.elementWalk;
+
+    var _bindingProps = bindingProps(ele, yakaApis),
+        value = _bindingProps.value,
+        components = _bindingProps.components;
 
     if (Array.isArray(components)) {
         return _react2.default.createElement(
@@ -18,13 +24,13 @@ exports.default = function (ele, that) {
                     if (value.some(function (val) {
                         return val === component.value;
                     })) {
-                        return that.elementWalk(Array.isArray(component.component) ? component.component : [component.component]);
+                        return elementWalk(Array.isArray(component.component) ? component.component : [component.component], yakaApis);
                     } else {
                         return null;
                     }
                 } else {
                     if (value === component.value) {
-                        return that.elementWalk(Array.isArray(component.component) ? component.component : [component.component]);
+                        return elementWalk(Array.isArray(component.component) ? component.component : [component.component], yakaApis);
                     } else {
                         return null;
                     }
@@ -35,7 +41,7 @@ exports.default = function (ele, that) {
         return _react2.default.createElement(
             'div',
             null,
-            components.value === value ? that.elementWalk(Array.isArray(components.component) ? components.component : [components.component]) : null
+            components.value === value ? elementWalk(Array.isArray(components.component) ? components.component : [components.component], yakaApis) : null
         );
     }
 };

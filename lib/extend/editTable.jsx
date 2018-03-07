@@ -1,21 +1,19 @@
 
 import React from 'react'
 
-export default function (ele, that) {
-    const { form, initData } = that
-    const { EditTable } = that.components
+export default function (ele, { yakaApis, elementWalk, componentCheck, initData, components, form, bindingProps }) {
+    const { EditTable } = components
     const { columns, value, scrollWidth, add, remove, exportExcel } = ele.props
     const props = {
-        that,
         columns,
         value: initData[ele.name] ? initData[ele.name] : value ? value : null,
         ele,
-        form,
         key: ele.name,
         scrollWidth,
         add,
         remove,
-        exportExcel
+        exportExcel,
+        yakaApis, elementWalk, componentCheck, initData, components, form, bindingProps
     }
     return <EditTable  {...props} />
 }

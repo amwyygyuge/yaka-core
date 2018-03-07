@@ -134,11 +134,7 @@ var YakaEditTable = exports.YakaEditTable = function (_Component) {
             }
         }, _this.createDataSource = function (props) {
             var columns = props.columns,
-                value = props.value,
-                ele = props.ele,
-                form = props.form,
-                that = props.that,
-                scrollWidth = props.scrollWidth;
+                value = props.value;
 
             _this._value = _this.createDafaultValue(columns);
             if (value !== null) {
@@ -162,13 +158,15 @@ var YakaEditTable = exports.YakaEditTable = function (_Component) {
             var columns = props.columns,
                 ele = props.ele,
                 form = props.form,
-                that = props.that,
+                elementWalk = props.elementWalk,
+                yakaApis = props.yakaApis,
+                componentCheck = props.componentCheck,
                 remove = props.remove;
             var getFieldDecorator = form.getFieldDecorator;
 
 
             columns.map(function (col) {
-                if (col.component && that.componentCheck(col)) {
+                if (col.component && componentCheck(col)) {
                     col.render = function (text, row, index) {
                         return _react2.default.createElement(
                             FormItem,
@@ -176,7 +174,7 @@ var YakaEditTable = exports.YakaEditTable = function (_Component) {
                             getFieldDecorator(ele.name + '[' + index + '].' + col.name, {
                                 initialValue: text ? text : null,
                                 rules: col.rules ? col.rules : null
-                            })(that.elementWalk([col, that.yakaApis])[0])
+                            })(elementWalk([col], yakaApis)[0])
                         );
                     };
 

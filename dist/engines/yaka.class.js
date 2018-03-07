@@ -84,7 +84,7 @@ var Yaka = exports.Yaka = function (_Component) {
                 return _this.functions;
             },
             getForm: function getForm() {
-                return _this.from;
+                return _this.form;
             },
             getComponent: function getComponent() {
                 return { components: _this.components, layoutComponents: _this.layoutComponents, extend: _this.extend };

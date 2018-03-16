@@ -72,7 +72,6 @@ var YakaForm = exports.YakaForm = function (_Yaka) {
     _createClass(YakaForm, [{
         key: 'render',
         value: function render() {
-            console.log(this.props);
             return _react2.default.createElement(
                 'div',
                 null,

@@ -13,25 +13,25 @@ var _table = require('igroot/lib/table');
 
 var _table2 = _interopRequireDefault(_table);
 
-var _button = require('igroot/lib/button');
-
-var _button2 = _interopRequireDefault(_button);
-
 var _spin = require('igroot/lib/spin');
 
 var _spin2 = _interopRequireDefault(_spin);
-
-var _message4 = require('igroot/lib/message');
-
-var _message5 = _interopRequireDefault(_message4);
 
 var _upload = require('igroot/lib/upload');
 
 var _upload2 = _interopRequireDefault(_upload);
 
+var _button = require('igroot/lib/button');
+
+var _button2 = _interopRequireDefault(_button);
+
 var _icon = require('igroot/lib/icon');
 
 var _icon2 = _interopRequireDefault(_icon);
+
+var _message2 = require('igroot/lib/message');
+
+var _message3 = _interopRequireDefault(_message2);
 
 var _form = require('igroot/lib/form');
 
@@ -43,15 +43,15 @@ require('igroot/lib/modal/style');
 
 require('igroot/lib/table/style');
 
-require('igroot/lib/button/style');
-
 require('igroot/lib/spin/style');
-
-require('igroot/lib/message/style');
 
 require('igroot/lib/upload/style');
 
+require('igroot/lib/button/style');
+
 require('igroot/lib/icon/style');
+
+require('igroot/lib/message/style');
 
 require('igroot/lib/form/style');
 
@@ -240,7 +240,7 @@ var YakaEditTable = exports.YakaEditTable = function (_Component) {
                 name = _this$state.name;
 
             if (dataSource.length === 1) {
-                _message5.default.error('数据不能少于一列');
+                _message3.default.error('数据不能少于一列');
             } else {
                 var val = _this.props.form.getFieldValue(name);
                 dataSource.pop();
@@ -287,7 +287,7 @@ var YakaEditTable = exports.YakaEditTable = function (_Component) {
             if (type == 'xls' || type == 'xlsx') {
                 _this.getXLSData(file);
             } else {
-                _message5.default.error('您上传的格式不是 xls 或者 xslx');
+                _message3.default.error('您上传的格式不是 xls 或者 xslx');
             }
 
             return false;
@@ -331,7 +331,7 @@ var YakaEditTable = exports.YakaEditTable = function (_Component) {
             var excelData = [];
 
             if (colNum < 0) {
-                _message5.default.error('表格的格式不符合要求');
+                _message3.default.error('表格的格式不符合要求');
                 return;
             }
 

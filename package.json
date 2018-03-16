@@ -6,7 +6,7 @@
   "license": "MIT",
   "dependencies": {
     "igroot": "^0.4.0",
-    "igroot-fetch": "^1.1.2",
+    "igroot-fetch": "^1.2.1",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "react-sortable-hoc": "^0.6.8",

@@ -38,7 +38,6 @@ exports.default = function (ele, _ref) {
     for (var i = 0; i < times; ++i) {
         _children.push(ele.children.slice(i * rowNum, (i + 1) * rowNum));
     }
-    console.log(form);
     var getFieldDecorator = form.getFieldDecorator;
 
     var styles = {

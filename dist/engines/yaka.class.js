@@ -65,7 +65,6 @@ var Yaka = exports.Yaka = function (_Component) {
         _this.initData = config.initData || {};
         _this.state = config.global || {};
         _this.extend = _extend2.default;
-        // logic state
         _this.logicState = {};
         _this.yakaApis = {
             formValueSettingFunction: function formValueSettingFunction(val) {
@@ -115,23 +114,8 @@ var Yaka = exports.Yaka = function (_Component) {
         // 表单规则遍历
 
 
-        //状态遍历
+        // 状态遍历
 
-    }, {
-        key: 'getLogicMapComponent',
-        value: function getLogicMapComponent(ele, state) {
-            var initData = this.initData;
-            if (ele.component === 'Logic' && ele.props && ele.props.value) {
-                var key = ele.props.value;
-
-                if (key.indexOf('$') > -1) {
-                    var formKey = key.slice(1, key.length).split('.');
-                    var value = initData[formKey[0]] || '';
-                    this.logicState[formKey[0]] = {};
-                    this.logicState[formKey[0]][formKey[1]] = value;
-                }
-            }
-        }
     }]);
 
     return Yaka;
@@ -141,96 +125,106 @@ var _initialiseProps = function _initialiseProps() {
     var _this2 = this;
 
     this.componentWillMount = function () {
-        //函数遍历
-        _this2.functionsWalk();
-        //函数绑定
-
-        //state遍历
-        _this2.stateWalk(_this2.layouts);
-
-        // logicSetState
-        _this2.setState(_this2.logicState);
-
-        //数据映射遍历
-        //规则遍历
-        _this2.rulesWalk(_this2.layouts);
-        //model遍历
-        _this2.modelWalk();
-        _this2.dataMapWalk();
+        _this2.init();
     };
 
     this.componentDidMount = function () {
         //载入初始表单数据
-        _this2.initForm();
+        _this2.initForm(_this2.initData);
+        _this2.classDidMount();
+    };
+
+    this.classDidMount = function () {};
+
+    this.init = function () {
+        var config = _this2.config,
+            layouts = _this2.layouts,
+            initData = _this2.initData,
+            state = _this2.state;
+        var models = config.models,
+            functions = config.functions;
+        //函数遍历
+
+        _this2.functionsWalk(functions);
+        //函数绑定
+        //state遍历
+        _this2.stateWalk(layouts, initData);
+        //数据映射遍历
+        //规则遍历
+        _this2.rulesWalk(layouts);
+        //model遍历
+        _this2.modelWalk(models);
+        _this2.dataMapWalk(state);
+    };
+
+    this.reset = function (nextProps) {
+        var config = nextProps.config;
+        var models = config.models,
+            functions = config.functions,
+            layouts = config.layouts,
+            initData = config.initData;
+
+        _this2.functions = {};
+        _this2.rules = {};
+        _this2.config = config;
+        _this2.layouts = config.layout;
+        _this2.initData = config.initData || {};
+        Object.assign(_this2.state, config.global);
+        //函数遍历
+        _this2.functionsWalk(functions);
+        //函数绑定
+        //state遍历
+        _this2.stateWalk(layouts, initData);
+        //载入初始表单数据
+        _this2.dataMapWalk(_this2.state);
+        setTimeout(function () {
+            _this2.initForm(initData);
+        }, 10);
     };
 
     this.componentWillReceiveProps = function (nextProps) {
         var debug = _this2.props.debug;
 
         if (debug && (nextProps.config.length !== _this2.props.config.length || JSON.stringify(nextProps.config) !== JSON.stringify(_this2.props.config))) {
-            var config = nextProps.config;
-
-            _this2.functions = {};
-            _this2.rules = {};
-            _this2.config = config;
-            _this2.layouts = config.layout;
-            _this2.initData = config.initData || {};
-            Object.assign(_this2.state, config.global);
-            //函数遍历
-            _this2.functionsWalk();
-            //函数绑定
-            //state遍历
-            _this2.stateWalk(_this2.layouts);
-            //载入初始表单数据
-            _this2.initForm();
-            _this2.dataMapWalk();
+            _this2.reset(nextProps);
         }
     };
 
     this.initForm = function () {
-        _this2.form.setFieldsValue(_this2.initData);
+        var initData = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+        _this2.form.setFieldsValue(initData);
     };
 
     this.functionsWalk = function () {
-        Object.assign(_this2.functions, (0, _model.functions)(_this2.config.functions, _this2.yakaApis));
+        var initFunctions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+        Object.assign(_this2.functions, (0, _model.functions)(initFunctions, _this2.yakaApis));
     };
 
     this.modelWalk = function () {
-        Object.assign(_this2.functions, (0, _model.models)(_this2.config.models, _this2.yakaApis));
+        var initModels = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+        Object.assign(_this2.functions, (0, _model.models)(initModels, _this2.yakaApis));
     };
 
-    this.rulesWalk = function (layouts) {
+    this.rulesWalk = function () {
+        var layouts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+
         Object.assign(_this2.rules, (0, _model.rules)(layouts));
         _this2.props.getFormData && _this2.props.getFormData(_this2.rules);
     };
 
     this.dataMapWalk = function () {
-        Object.assign(_this2.state, (0, _model.dataMap)(_this2.dataMap, _this2.yakaApis));
+        var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+        Object.assign(state, (0, _model.dataMap)(_this2.dataMap, _this2.yakaApis));
     };
 
-    this.stateWalk = function (layouts) {
-        if (!Array.isArray(layouts)) {
-            throw Error('children must be an array!');
-        }
-        var state = {};
-        layouts.forEach(function (ele) {
-            if (ele.state) {
-                var _state = {};
-                var component_state = {};
-                Object.keys(ele.state).forEach(function (key) {
-                    component_state[key] = ele.state[key];
-                });
-                _state[ele.name] = component_state;
-                Object.assign(state, _state);
-            }
+    this.stateWalk = function () {
+        var layouts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+        var initData = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
-            if (ele.children) {
-                Object.assign(state, _this2.stateWalk(ele.children));
-            }
-
-            _this2.getLogicMapComponent(ele);
-        });
-
-        _this2.setState(state);
+        _this2.setState((0, _model.stateWalk)(layouts, initData));
     };
 };

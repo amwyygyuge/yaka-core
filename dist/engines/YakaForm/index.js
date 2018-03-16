@@ -49,12 +49,8 @@ var YakaForm = exports.YakaForm = function (_Yaka) {
             args[_key] = arguments[_key];
         }
 
-        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = YakaForm.__proto__ || Object.getPrototypeOf(YakaForm)).call.apply(_ref, [this].concat(args))), _this), _this.componentDidMount = function () {
-            //载入初始表单数据
-            _this.initForm();
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = YakaForm.__proto__ || Object.getPrototypeOf(YakaForm)).call.apply(_ref, [this].concat(args))), _this), _this.classDidMount = function () {
             _this.setDidComponentConfig();
-        }, _this.initForm = function () {
-            _this.form.setFieldsValue(_this.initData);
         }, _this.onSubmit = function () {
             var validateFields = _this.form.validateFields;
             var onSubmit = _this.props.onSubmit;
@@ -76,6 +72,7 @@ var YakaForm = exports.YakaForm = function (_Yaka) {
     _createClass(YakaForm, [{
         key: 'render',
         value: function render() {
+            console.log(this.props);
             return _react2.default.createElement(
                 'div',
                 null,

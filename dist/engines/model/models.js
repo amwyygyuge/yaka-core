@@ -13,15 +13,19 @@ var _igrootFetch2 = _interopRequireDefault(_igrootFetch);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var modelFactory = function modelFactory(model, yakaApis) {
+    var type = model.type,
+        params = model.params,
+        url = model.url,
+        streams = model.streams;
     var getState = yakaApis.getState;
 
     return function () {
         var auto = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
 
         var params = {};
-        if (auto !== true && model.params) {
-            Object.keys(model.params).forEach(function (key) {
-                var value = model.params[key];
+        if (auto !== true && params) {
+            Object.keys(params).forEach(function (key) {
+                var value = params[key];
                 if ((0, _tool.isReadState)(value)) {
                     var val = (0, _tool.readState)(value, getState());
                     params[key] = val;
@@ -35,9 +39,16 @@ var modelFactory = function modelFactory(model, yakaApis) {
                 params[key] = value;
             });
         }
-        (0, _igrootFetch2.default)(model.url).get(params).then(function (res) {
-            (0, _tool.streamWalk)(model.streams, res, yakaApis);
-        });
+        if (type === 'get') {
+            (0, _igrootFetch2.default)(url).get(params).then(function (res) {
+                (0, _tool.streamWalk)(streams, res, yakaApis);
+            });
+        }
+        if (type === 'post') {
+            (0, _igrootFetch2.default)(url).post(params).then(function (res) {
+                (0, _tool.streamWalk)(streams, res, yakaApis);
+            });
+        }
     };
 };
 var models = function models(_models2, yakaApis) {

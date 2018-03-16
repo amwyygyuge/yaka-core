@@ -38,14 +38,8 @@ var YakaFormOnFlow = exports.YakaFormOnFlow = function (_Yaka) {
 
         var _this = _possibleConstructorReturn(this, (YakaFormOnFlow.__proto__ || Object.getPrototypeOf(YakaFormOnFlow)).call(this, props));
 
-        _this.componentDidMount = function () {
-            //载入初始表单数据
-            _this.initForm();
+        _this.classDidMount = function () {
             _this.setDidComponentConfig();
-        };
-
-        _this.initForm = function () {
-            _this.form.setFieldsValue(_this.initData);
         };
 
         _this.submit = function (success, fail) {

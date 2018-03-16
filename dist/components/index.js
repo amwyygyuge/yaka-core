@@ -4,10 +4,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _input = require('igroot/lib/input');
-
-var _input2 = _interopRequireDefault(_input);
-
 var _card = require('igroot/lib/card');
 
 var _card2 = _interopRequireDefault(_card);
@@ -20,6 +16,10 @@ var _inputNumber = require('igroot/lib/input-number');
 
 var _inputNumber2 = _interopRequireDefault(_inputNumber);
 
+var _input = require('igroot/lib/input');
+
+var _input2 = _interopRequireDefault(_input);
+
 var _button = require('igroot/lib/button');
 
 var _button2 = _interopRequireDefault(_button);
@@ -28,13 +28,13 @@ var _checkbox = require('igroot/lib/checkbox');
 
 var _checkbox2 = _interopRequireDefault(_checkbox);
 
-require('igroot/lib/input/style');
-
 require('igroot/lib/card/style');
 
 require('igroot/lib/table/style');
 
 require('igroot/lib/input-number/style');
+
+require('igroot/lib/input/style');
 
 require('igroot/lib/button/style');
 

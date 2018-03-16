@@ -10,7 +10,6 @@ export default function (ele, { yakaApis, form, bindingProps, componentCheck, el
     for (let i = 0; i < times; ++i) {
         _children.push(ele.children.slice(i * rowNum, (i + 1) * rowNum))
     }
-    console.log(form);
     const { getFieldDecorator } = form
     const styles = {
         title: {

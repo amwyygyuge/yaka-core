@@ -11,15 +11,11 @@ export class YakaFormOnFlow extends Yaka {
         super(props)
         IgrootConfigFormThis = this
     }
-    componentDidMount = () => {
-        //载入初始表单数据
-        this.initForm()
+
+    classDidMount = () => {
         this.setDidComponentConfig()
     }
 
-    initForm = () => {
-        this.form.setFieldsValue(this.initData)
-    }
 
     submit = (success, fail) => {
         const { validateFields } = this.form

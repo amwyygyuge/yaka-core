@@ -93,7 +93,7 @@ export class Yaka extends Component {
         this.dataMapWalk(this.state)
         setTimeout(() => {
             this.initForm(initData)
-        }, 10)
+        }, 100)
     }
 
     componentWillReceiveProps = (nextProps) => {

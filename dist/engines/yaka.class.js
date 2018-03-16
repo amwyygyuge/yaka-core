@@ -179,7 +179,7 @@ var _initialiseProps = function _initialiseProps() {
         _this2.dataMapWalk(_this2.state);
         setTimeout(function () {
             _this2.initForm(initData);
-        }, 10);
+        }, 100);
     };
 
     this.componentWillReceiveProps = function (nextProps) {

@@ -32,18 +32,15 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var YakaEditor = exports.YakaEditor = function (_Component) {
   _inherits(YakaEditor, _Component);
 
-  function YakaEditor() {
-    var _ref;
-
-    var _temp, _this, _ret;
-
+  function YakaEditor(props) {
     _classCallCheck(this, YakaEditor);
 
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
+    var _this = _possibleConstructorReturn(this, (YakaEditor.__proto__ || Object.getPrototypeOf(YakaEditor)).call(this));
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = YakaEditor.__proto__ || Object.getPrototypeOf(YakaEditor)).call.apply(_ref, [this].concat(args))), _this), _this.isFirstInit = true, _temp), _possibleConstructorReturn(_this, _ret);
+    _this.isFirstInit = true;
+
+    _this.id = '' + props.id + new Date().getTime();
+    return _this;
   }
 
   _createClass(YakaEditor, [{
@@ -51,13 +48,10 @@ var YakaEditor = exports.YakaEditor = function (_Component) {
     value: function componentDidMount() {
       var _this2 = this;
 
-      var _props = this.props,
-          id = _props.id,
-          style = _props.style;
+      var style = this.props.style;
 
-      var elem = document.getElementById(id);
+      var elem = document.getElementById(this.id);
       var editor = this.editor = new _wangeditor2.default(elem);
-      this.setState({ id: id });
       // 使用 onchange 函数监听内容的变化，并实时更新到 state 中
       editor.customConfig.onchange = function (html) {
         (_this2.props.onChange || function () {})(html);
@@ -82,18 +76,17 @@ var YakaEditor = exports.YakaEditor = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
-      var _props2 = this.props,
-          extraCls = _props2.extraCls,
-          style = _props2.style,
-          id = _props2.id,
-          disabled = _props2.disabled;
+      var _props = this.props,
+          extraCls = _props.extraCls,
+          style = _props.style,
+          disabled = _props.disabled;
 
       var cls = extraCls || '';
 
       return _react2.default.createElement(
         'div',
         { className: 'yaka-editor-container' },
-        _react2.default.createElement('div', { id: id, className: 'yaka-editor ' + cls, style: style }),
+        _react2.default.createElement('div', { id: this.id, className: 'yaka-editor ' + cls, style: style }),
         disabled && _react2.default.createElement('div', { className: 'disabled-mask' })
       );
     }

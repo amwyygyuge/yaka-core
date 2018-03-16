@@ -4,13 +4,16 @@ import uuid from 'uuid'
 import './index.css'
 
 export class YakaEditor extends Component {
+  constructor(props) {
+    super()
+    this.id = `${props.id}${new Date().getTime()}`
+  }
   isFirstInit = true
 
   componentDidMount() {
-    const { id, style } = this.props
-    const elem = document.getElementById(id)
+    const { style } = this.props
+    const elem = document.getElementById(this.id)
     const editor = this.editor = new E(elem)
-    this.setState({ id })
     // 使用 onchange 函数监听内容的变化，并实时更新到 state 中
     editor.customConfig.onchange = html => {
       (this.props.onChange || (() => { }))(html)
@@ -34,12 +37,12 @@ export class YakaEditor extends Component {
   }
 
   render() {
-    const { extraCls, style, id, disabled } = this.props
+    const { extraCls, style, disabled } = this.props
     const cls = extraCls || ''
 
     return (
       <div className="yaka-editor-container">
-        <div id={id} className={`yaka-editor ${cls}`} style={style} />
+        <div id={this.id} className={`yaka-editor ${cls}`} style={style} />
         {disabled && <div className="disabled-mask" />}
       </div>
     )

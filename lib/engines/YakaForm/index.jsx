@@ -10,7 +10,7 @@ export class YakaForm extends Yaka {
             </div> : null}
         </div>
     }
-    classDidMount = () => {
+    yakaDidMount = () => {
         this.setDidComponentConfig()
     }
 

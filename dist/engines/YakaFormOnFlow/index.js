@@ -17,6 +17,8 @@ var _react2 = _interopRequireDefault(_react);
 
 var _yaka = require('./../yaka.class');
 
+var _model = require('./../model');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -38,7 +40,20 @@ var YakaFormOnFlow = exports.YakaFormOnFlow = function (_Yaka) {
 
         var _this = _possibleConstructorReturn(this, (YakaFormOnFlow.__proto__ || Object.getPrototypeOf(YakaFormOnFlow)).call(this, props));
 
-        _this.classDidMount = function () {
+        _this.rulesWalk = function () {
+            var layouts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+
+            Object.assign(_this.rules, (0, _model.rules)(layouts));
+            _this.props.getFormData && _this.props.getFormData(_this.rules);
+        };
+
+        _this.yakaWillMount = function () {
+            var layouts = _this.layouts;
+
+            _this.rulesWalk(layouts);
+        };
+
+        _this.yakaDidMount = function () {
             _this.setDidComponentConfig();
         };
 
@@ -69,6 +84,9 @@ var YakaFormOnFlow = exports.YakaFormOnFlow = function (_Yaka) {
         IgrootConfigFormThis = _this;
         return _this;
     }
+
+    // 表单规则遍历
+
 
     return YakaFormOnFlow;
 }(_yaka.Yaka);

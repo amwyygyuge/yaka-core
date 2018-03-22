@@ -49,7 +49,7 @@ var YakaForm = exports.YakaForm = function (_Yaka) {
             args[_key] = arguments[_key];
         }
 
-        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = YakaForm.__proto__ || Object.getPrototypeOf(YakaForm)).call.apply(_ref, [this].concat(args))), _this), _this.classDidMount = function () {
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = YakaForm.__proto__ || Object.getPrototypeOf(YakaForm)).call.apply(_ref, [this].concat(args))), _this), _this.yakaDidMount = function () {
             _this.setDidComponentConfig();
         }, _this.onSubmit = function () {
             var validateFields = _this.form.validateFields;

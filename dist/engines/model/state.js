@@ -20,26 +20,30 @@ var stateWalk = function stateWalk(layouts, initData) {
     if (!Array.isArray(layouts)) {
         throw Error('children must be an array!');
     }
-    var state = {},
+    var _state = {},
         logicState = {};
     layouts.forEach(function (ele) {
+        var state = ele.state,
+            name = ele.name,
+            children = ele.children;
         // 收集state
-        if (ele.state) {
-            var _state = {};
+
+        if (state) {
+            var eleState = {};
             var component_state = {};
-            Object.keys(ele.state).forEach(function (key) {
-                component_state[key] = ele.state[key];
+            Object.keys(state).forEach(function (key) {
+                component_state[key] = state[key];
             });
-            _state[ele.name] = component_state;
-            Object.assign(state, _state);
+            eleState[name] = component_state;
+            Object.assign(_state, eleState);
         }
 
-        if (ele.children) {
-            Object.assign(state, stateWalk(ele.children, initData));
+        if (children) {
+            Object.assign(_state, stateWalk(children, initData));
         }
         // 收集逻辑组件
-        Object.assign(state, getLogicMapComponent(ele, initData));
+        Object.assign(_state, getLogicMapComponent(ele, initData));
     });
-    return Object.assign(state, logicState);
+    return Object.assign(_state, logicState);
 };
 exports.default = stateWalk;

@@ -12,14 +12,23 @@ var _tool = require('./../../tool');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var bindingText = function bindingText(ele, getState) {
+var bindingText = function bindingText(ele, getState, getProps) {
     var children = [];
     if (ele.text) {
         if ((0, _tool.isReadState)(ele.text)) {
+            // #
             var text = (0, _tool.readState)(ele.text, getState());
             children.push(text);
         } else {
-            children.push(ele.text);
+            // @
+            if (ele.text.indexOf('@') !== -1) {
+                var name = ele.text.slice(1, ele.text.length);
+                var props = getProps();
+                children.push(props[name]);
+            } else {
+                // 普通数据
+                children.push(ele.text);
+            }
         }
     }
     return children;
@@ -36,7 +45,8 @@ var componentCheck = function componentCheck(ele) {
 };
 var bindingProps = function bindingProps(ele, yakaApis) {
     var getState = yakaApis.getState,
-        getFunction = yakaApis.getFunction;
+        getFunction = yakaApis.getFunction,
+        getProps = yakaApis.getProps;
 
     var props = { key: ele.name };
     if (ele.props) {
@@ -48,10 +58,16 @@ var bindingProps = function bindingProps(ele, yakaApis) {
                     _state['' + key] = (0, _tool.readState)(ele.props[key], getState());
                     return false;
                 }
-                //绑定函数
+                // 绑定函数
                 if (ele.props[key].indexOf('*') !== -1) {
                     var redirect = ele.props[key].slice(1, ele.props[key].length);
                     _state['' + key] = getFunction()[redirect];
+                    return false;
+                }
+                // 绑定外部props
+                if (ele.props[key].indexOf('@') !== -1) {
+                    var _redirect = ele.props[key].slice(1, ele.props[key].length);
+                    _state['' + key] = getProps()[_redirect];
                     return false;
                 }
             }
@@ -67,7 +83,8 @@ var componentFilter = function componentFilter(ele, yakaApis) {
     var getState = yakaApis.getState,
         getComponent = yakaApis.getComponent,
         getForm = yakaApis.getForm,
-        getInitData = yakaApis.getInitData;
+        getInitData = yakaApis.getInitData,
+        getProps = yakaApis.getProps;
 
     var props = bindingProps(ele, yakaApis);
     if (props.show === false) {
@@ -89,7 +106,7 @@ var componentFilter = function componentFilter(ele, yakaApis) {
         return extend[ele.component](ele, { yakaApis: yakaApis, elementWalk: elementWalk, componentCheck: componentCheck, initData: getInitData(), components: components, form: getForm(), bindingProps: bindingProps });
     }
     //常规组件
-    var children = bindingText(ele, getState),
+    var children = bindingText(ele, getState, getProps),
         component = components[ele.component] ? components[ele.component] : ele.component;
     if (ele.children) {
         Object.assign(children, elementWalk(ele.children, yakaApis));

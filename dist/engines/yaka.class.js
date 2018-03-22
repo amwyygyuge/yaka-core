@@ -55,7 +55,6 @@ var Yaka = exports.Yaka = function (_Component) {
             form = props.form;
 
         _this.functions = {};
-        _this.rules = {};
         _this.config = config;
         _this.layouts = config.layout;
         _this.dataMap = config.dataMap || {};
@@ -90,6 +89,9 @@ var Yaka = exports.Yaka = function (_Component) {
             },
             getInitData: function getInitData() {
                 return _this.initData;
+            },
+            getProps: function getProps() {
+                return _this.props;
             }
         };
         return _this;
@@ -98,12 +100,11 @@ var Yaka = exports.Yaka = function (_Component) {
     _createClass(Yaka, [{
         key: 'render',
         value: function render() {
-            return _react2.default.createElement(
-                'div',
-                null,
-                (0, _model.layout)(this.layouts, this.yakaApis)
-            );
+            return (0, _model.layout)(this.layouts, this.yakaApis);
         }
+
+        // 数据载入
+
 
         // 函数遍历
 
@@ -111,7 +112,7 @@ var Yaka = exports.Yaka = function (_Component) {
         // 数据模型绑定和运行
 
 
-        // 表单规则遍历
+        // 数据map遍历
 
 
         // 状态遍历
@@ -131,10 +132,10 @@ var _initialiseProps = function _initialiseProps() {
     this.componentDidMount = function () {
         //载入初始表单数据
         _this2.initForm(_this2.initData);
-        _this2.classDidMount();
+        _this2.yakaDidMount();
     };
 
-    this.classDidMount = function () {};
+    this.yakaDidMount = function () {};
 
     this.init = function () {
         var config = _this2.config,
@@ -150,12 +151,13 @@ var _initialiseProps = function _initialiseProps() {
         //state遍历
         _this2.stateWalk(layouts, initData);
         //数据映射遍历
-        //规则遍历
-        _this2.rulesWalk(layouts);
         //model遍历
         _this2.modelWalk(models);
         _this2.dataMapWalk(state);
+        _this2.yakaWillMount();
     };
+
+    this.yakaWillMount = function () {};
 
     this.reset = function (nextProps) {
         var config = nextProps.config;
@@ -164,15 +166,12 @@ var _initialiseProps = function _initialiseProps() {
             layouts = config.layouts,
             initData = config.initData;
 
-        _this2.functions = {};
-        _this2.rules = {};
         _this2.config = config;
         _this2.layouts = config.layout;
         _this2.initData = config.initData || {};
         Object.assign(_this2.state, config.global);
         //函数遍历
         _this2.functionsWalk(functions);
-        //函数绑定
         //state遍历
         _this2.stateWalk(layouts, initData);
         //载入初始表单数据
@@ -206,13 +205,6 @@ var _initialiseProps = function _initialiseProps() {
         var initModels = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
         Object.assign(_this2.functions, (0, _model.models)(initModels, _this2.yakaApis));
-    };
-
-    this.rulesWalk = function () {
-        var layouts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-
-        Object.assign(_this2.rules, (0, _model.rules)(layouts));
-        _this2.props.getFormData && _this2.props.getFormData(_this2.rules);
     };
 
     this.dataMapWalk = function () {

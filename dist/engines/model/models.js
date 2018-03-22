@@ -12,13 +12,26 @@ var _igrootFetch2 = _interopRequireDefault(_igrootFetch);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+// const BsFetch1 = BsFetch()
 var modelFactory = function modelFactory(model, yakaApis) {
     var type = model.type,
         params = model.params,
         url = model.url,
-        streams = model.streams;
-    var getState = yakaApis.getState;
+        streams = model.streams,
+        headers = model.headers;
+    var getState = yakaApis.getState,
+        getProps = yakaApis.getProps;
 
+    Object.keys(headers).forEach(function (key) {
+        var val = headers[key];
+        if ((0, _tool.isReadState)(val)) {
+            headers[key] = (0, _tool.readState)(val, getState());
+        }
+        if (val.indexOf('@') !== -1) {
+            var name = val.slice(1, val.length);
+            headers[key] = getProps()[name];
+        }
+    });
     return function () {
         var auto = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
 
@@ -40,12 +53,12 @@ var modelFactory = function modelFactory(model, yakaApis) {
             });
         }
         if (type === 'get' || type === 'restful') {
-            (0, _igrootFetch2.default)(url).get(params).then(function (res) {
+            (0, _igrootFetch2.default)(url, { headers: headers }).get(params).then(function (res) {
                 (0, _tool.streamWalk)(streams, res, yakaApis);
             });
         }
         if (type === 'post') {
-            (0, _igrootFetch2.default)(url).post(params).then(function (res) {
+            (0, _igrootFetch2.default)(url, { headers: headers }).post(params).then(function (res) {
                 (0, _tool.streamWalk)(streams, res, yakaApis);
             });
         }

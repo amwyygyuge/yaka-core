@@ -1,7 +1,7 @@
 import React, { Component, Children } from 'react'
 import { Button, Form } from 'igroot'
 import { streamTo, streamForm, readState, isReadState, streamWalk, streamFilter } from './../tool';
-import { functions, models, rules, dataMap, layout, stateWalk } from './model';
+import { functions, models, dataMap, layout, stateWalk } from './model';
 import defaultComponents from './../components/';
 import defaultLayoutComponents from './../layoutComponents/';
 import BsFetch from 'igroot-fetch'
@@ -11,7 +11,6 @@ export class Yaka extends Component {
         super()
         const { config, components, layoutComponents, form } = props
         this.functions = {}
-        this.rules = {}
         this.config = config
         this.layouts = config.layout
         this.dataMap = config.dataMap || {}
@@ -32,14 +31,13 @@ export class Yaka extends Component {
             getComponent: () => {
                 return { components: this.components, layoutComponents: this.layoutComponents, extend: this.extend }
             },
-            getInitData: () => this.initData
+            getInitData: () => this.initData,
+            getProps: () => this.props
         }
     }
 
     render() {
-        return <div>
-            {layout(this.layouts, this.yakaApis)}
-        </div>
+        return layout(this.layouts, this.yakaApis)
     }
 
     componentWillMount = () => {
@@ -49,13 +47,11 @@ export class Yaka extends Component {
     componentDidMount = () => {
         //载入初始表单数据
         this.initForm(this.initData)
-        this.classDidMount()
+        this.yakaDidMount()
 
     }
 
-    classDidMount = () => {
-
-    }
+    yakaDidMount = () => { }
 
     init = () => {
         const { config, layouts, initData, state } = this
@@ -66,34 +62,29 @@ export class Yaka extends Component {
         //state遍历
         this.stateWalk(layouts, initData)
         //数据映射遍历
-        //规则遍历
-        this.rulesWalk(layouts)
         //model遍历
         this.modelWalk(models)
         this.dataMapWalk(state)
+        this.yakaWillMount()
     }
 
+    yakaWillMount = () => { }
 
 
     reset = (nextProps) => {
         const { config } = nextProps
         const { models, functions, layouts, initData } = config
-        this.functions = {}
-        this.rules = {}
         this.config = config
         this.layouts = config.layout
         this.initData = config.initData || {}
         Object.assign(this.state, config.global)
         //函数遍历
         this.functionsWalk(functions)
-        //函数绑定
         //state遍历
         this.stateWalk(layouts, initData)
         //载入初始表单数据
         this.dataMapWalk(this.state)
-        setTimeout(() => {
-            this.initForm(initData)
-        }, 100)
+        setTimeout(() => { this.initForm(initData) }, 100)
     }
 
     componentWillReceiveProps = (nextProps) => {
@@ -103,6 +94,7 @@ export class Yaka extends Component {
         }
     }
 
+    // 数据载入
     initForm = (initData = {}) => {
         this.form.setFieldsValue(initData)
     }
@@ -123,12 +115,7 @@ export class Yaka extends Component {
         )
     }
 
-    // 表单规则遍历
-    rulesWalk = (layouts = []) => {
-        Object.assign(this.rules, rules(layouts))
-        this.props.getFormData && this.props.getFormData(this.rules)
-    }
-
+    // 数据map遍历
     dataMapWalk = (state = {}) => {
         Object.assign(state, dataMap(this.dataMap, this.yakaApis))
     }

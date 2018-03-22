@@ -6,14 +6,17 @@ Object.defineProperty(exports, "__esModule", {
 
 var _tool = require('./../../tool/');
 
-var dataMap = function dataMap(_dataMap2, yakaApis) {
+var dataMap = function dataMap() {
+    var dataMap = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    var yakaApis = arguments[1];
+
     var _dataMap = {};
     var getState = yakaApis.getState;
 
-    Object.keys(_dataMap2 || {}).forEach(function (key) {
+    Object.keys(dataMap).forEach(function (key) {
         _dataMap[key] = function () {
             var state = getState();
-            var _dataMap$key = _dataMap2[key],
+            var _dataMap$key = dataMap[key],
                 value = _dataMap$key.value,
                 map = _dataMap$key.map;
 

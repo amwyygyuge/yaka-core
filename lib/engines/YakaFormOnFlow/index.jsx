@@ -1,6 +1,7 @@
 import React, { Component, Children } from 'react'
 import { Form } from 'igroot'
 import { Yaka } from './../yaka.class'
+import { rules } from './../model';
 let IgrootConfigFormThis
 function setStorageItem(key, value) {
     window.localStorage && window.localStorage.setItem(key, value)
@@ -12,7 +13,18 @@ export class YakaFormOnFlow extends Yaka {
         IgrootConfigFormThis = this
     }
 
-    classDidMount = () => {
+    // 表单规则遍历
+    rulesWalk = (layouts = []) => {
+        Object.assign(this.rules, rules(layouts))
+        this.props.getFormData && this.props.getFormData(this.rules)
+    }
+    
+    yakaWillMount = () => {
+        const { layouts } = this
+        this.rulesWalk(layouts)
+    }
+
+    yakaDidMount = () => {
         this.setDidComponentConfig()
     }
 

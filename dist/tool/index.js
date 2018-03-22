@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+// 数据流入解析
 var streamTo = function streamTo(arr, obj, target) {
     if (arr.length === 0) return obj;
     var _obj = {};
@@ -16,6 +17,7 @@ var streamTo = function streamTo(arr, obj, target) {
     }
     return streamTo(arr, _obj);
 };
+// 数据流出解析
 var streamForm = function streamForm(arr, obj, data) {
     if (arr.length === 0) return obj;
     var _obj = {};
@@ -30,6 +32,7 @@ var streamForm = function streamForm(arr, obj, data) {
     }
     return streamForm(arr, _obj);
 };
+// 读取state
 var readState = function readState(key, state) {
     var redirect = key.slice(1, key.length).split('.');
     var data = streamForm(redirect, {}, state);
@@ -39,22 +42,26 @@ var readState = function readState(key, state) {
         return data;
     }
 };
+// 检查是否为读取state
 var isReadState = function isReadState(key) {
     return key.indexOf('$') !== -1;
 };
+// 数据分流
 var streamFilter = function streamFilter(streamIn, data) {
     var val = null;
     switch (typeof streamIn === 'undefined' ? 'undefined' : _typeof(streamIn)) {
         //数据别名
         case 'object':
             val = streamForm(streamIn.path.split('.'), {}, data);
-            Object.keys(streamIn.alias).forEach(function (aliasKey) {
-                var alias = streamIn.alias[aliasKey];
-                val.map(function (item) {
-                    item[aliasKey] = item[alias];
-                    return item;
+            if (streamIn.alias) {
+                Object.keys(streamIn.alias).forEach(function (aliasKey) {
+                    var alias = streamIn.alias[aliasKey];
+                    val.map(function (item) {
+                        item[aliasKey] = item[alias];
+                        return item;
+                    });
                 });
-            });
+            }
             return val;
         //布尔类型
         case 'boolean':
@@ -66,16 +73,18 @@ var streamFilter = function streamFilter(streamIn, data) {
             return val;
     }
 };
+// 数据流遍历
 var streamWalk = function streamWalk(streams, data, yakaApis) {
     var state = {};
     var formValueSettingFunction = yakaApis.formValueSettingFunction,
         stateValueSettingFunction = yakaApis.stateValueSettingFunction,
-        formValueGettingFunction = yakaApis.formValueGettingFunction;
+        formValueGettingFunction = yakaApis.formValueGettingFunction,
+        getProps = yakaApis.getProps;
 
     Object.keys(streams).forEach(function (key) {
         var val = streamFilter(streams[key], data);
+        //表单数据流        
         if (key.indexOf('#') !== -1) {
-            //表单数据流
             if (key.slice(1, key.length).split('.').length === 1) {
                 var _stream = streamTo(key.slice(1, key.length).split('.'), {}, val);
                 formValueSettingFunction(_stream);
@@ -92,6 +101,12 @@ var streamWalk = function streamWalk(streams, data, yakaApis) {
         if (isReadState(key)) {
             var _stream2 = streamTo(key.slice(1, key.length).split('.'), {}, val);
             Object.assign(state, _stream2);
+        }
+        // 外部接口接受
+        if (key.indexOf('@') !== -1) {
+            var props = getProps();
+            var name = key.slice(1, key.length);
+            typeof props[name] === 'function' ? props[name](val) : console.error('props is not a funciton!');
         }
     });
     stateValueSettingFunction(state);

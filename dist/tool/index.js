@@ -43,7 +43,10 @@ var readState = function readState(key, state) {
     }
 };
 // 检查是否为读取state
-var isReadState = function isReadState(key) {
+var isReadState = function isReadState() {
+    var key = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+
+
     return key.indexOf('$') !== -1;
 };
 // 数据分流

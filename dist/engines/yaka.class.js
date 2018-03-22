@@ -55,6 +55,7 @@ var Yaka = exports.Yaka = function (_Component) {
             form = props.form;
 
         _this.functions = {};
+        _this.rules = {};
         _this.config = config;
         _this.layouts = config.layout;
         _this.dataMap = config.dataMap || {};

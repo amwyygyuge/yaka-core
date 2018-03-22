@@ -11,6 +11,7 @@ export class Yaka extends Component {
         super()
         const { config, components, layoutComponents, form } = props
         this.functions = {}
+        this.rules = {}
         this.config = config
         this.layouts = config.layout
         this.dataMap = config.dataMap || {}

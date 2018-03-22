@@ -30,7 +30,9 @@ var modelFactory = function modelFactory(model, yakaApis) {
         }
         if (val.indexOf('@') !== -1) {
             var name = val.slice(1, val.length);
-            headers[key] = getProps()[name];
+            if (getProps()[name]) {
+                headers[key] = getProps()[name];
+            }
         }
     });
     return function () {

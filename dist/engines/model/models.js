@@ -18,7 +18,8 @@ var modelFactory = function modelFactory(model, yakaApis) {
         params = model.params,
         url = model.url,
         streams = model.streams,
-        headers = model.headers;
+        _model$headers = model.headers,
+        headers = _model$headers === undefined ? {} : _model$headers;
     var getState = yakaApis.getState,
         getProps = yakaApis.getProps;
 
@@ -53,7 +54,11 @@ var modelFactory = function modelFactory(model, yakaApis) {
             });
         }
         if (type === 'get' || type === 'restful') {
-            (0, _igrootFetch2.default)(url, { headers: headers }).get(params).then(function (res) {
+            (0, _igrootFetch2.default)(url, {
+                headers: {
+                    Authorization: 'Bearer xxxxxx'
+                }
+            }).get(params).then(function (res) {
                 (0, _tool.streamWalk)(streams, res, yakaApis);
             });
         }

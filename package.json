@@ -1,14 +1,14 @@
 {
   "name": "yaka-core",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "",
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "igroot": "^0.4.0",
-    "igroot-fetch": "^1.2.1",
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0",
+    "igroot": "1.1.5",
+    "igroot-fetch": "^1.2.2",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
     "react-sortable-hoc": "^0.6.8",
     "uuid": "^3.1.0",
     "wangeditor": "3.0.12",
@@ -19,7 +19,7 @@
     "npm": ">= 3"
   },
   "scripts": {
-    "dist": "babel lib -d dist "
+    "dist": "babel --watch lib -d dist "
   },
   "files": [
     "dist"

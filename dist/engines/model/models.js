@@ -56,11 +56,7 @@ var modelFactory = function modelFactory(model, yakaApis) {
             });
         }
         if (type === 'get' || type === 'restful') {
-            (0, _igrootFetch2.default)(url, {
-                headers: {
-                    Authorization: 'Bearer xxxxxx'
-                }
-            }).get(params).then(function (res) {
+            (0, _igrootFetch2.default)(url, { headers: headers }).get(params).then(function (res) {
                 (0, _tool.streamWalk)(streams, res, yakaApis);
             });
         }

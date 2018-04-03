@@ -18,7 +18,7 @@ export class YakaFormOnFlow extends Yaka {
         Object.assign(this.rules, rules(layouts))
         this.props.getFormData && this.props.getFormData(this.rules)
     }
-    
+
     yakaWillMount = () => {
         const { layouts } = this
         this.rulesWalk(layouts)
@@ -53,7 +53,9 @@ export default Form.create({
         if (IgrootConfigFormThis.props.edit === true) {
             const editNow = IgrootConfigFormThis.props.form.getFieldsValue()
             Object.assign(editNow, values)
-            setStorageItem('editformNow', JSON.stringify(editNow))
+            const _editNow = JSON.stringify(editNow)
+            if (_editNow.length > 5 * 1024 * 1024) return;
+            setStorageItem('editformNow', _editNow)
         }
     }
 })(YakaFormOnFlow)

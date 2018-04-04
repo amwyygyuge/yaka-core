@@ -97,8 +97,11 @@ exports.default = _form2.default.create({
             var editNow = IgrootConfigFormThis.props.form.getFieldsValue();
             Object.assign(editNow, values);
             var _editNow = JSON.stringify(editNow);
-            if (_editNow.length > 5 * 1024 * 1024) return;
-            setStorageItem('editformNow', _editNow);
+            try {
+                setStorageItem('editformNow', _editNow);
+            } catch (error) {
+                console.error(error);
+            }
         }
     }
 })(YakaFormOnFlow);

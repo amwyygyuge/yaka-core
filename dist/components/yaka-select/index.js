@@ -70,12 +70,17 @@ var YakaSelect = exports.YakaSelect = function (_Component) {
     _createClass(YakaSelect, [{
         key: 'render',
         value: function render() {
+            var _value = undefined;
             var props = this.props;
-            var children = [];
+            var options = props.options,
+                value = props.value,
+                mode = props.mode;
 
+            _value = value;
+            var children = [];
             if ('options' in props) {
-                if (Array.isArray(props.options)) {
-                    props.options.forEach(function (option) {
+                if (Array.isArray(options)) {
+                    options.forEach(function (option) {
                         children.push(_react2.default.createElement(
                             Option,
                             { key: '' + option.value, value: '' + option.value },
@@ -84,7 +89,9 @@ var YakaSelect = exports.YakaSelect = function (_Component) {
                     });
                 }
             }
-
+            if (value === "" && mode === 'multiple') {
+                _value = [];
+            }
             return _react2.default.createElement(
                 _select2.default,
                 _extends({
@@ -92,6 +99,7 @@ var YakaSelect = exports.YakaSelect = function (_Component) {
                     allowClear: true,
                     filterOption: this.handleFilterOption
                 }, props, {
+                    value: _value,
                     style: { width: '100%' }
                 }),
                 children

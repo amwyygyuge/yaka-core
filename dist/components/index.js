@@ -8,10 +8,6 @@ var _card = require('igroot/lib/card');
 
 var _card2 = _interopRequireDefault(_card);
 
-var _table = require('igroot/lib/table');
-
-var _table2 = _interopRequireDefault(_table);
-
 var _inputNumber = require('igroot/lib/input-number');
 
 var _inputNumber2 = _interopRequireDefault(_inputNumber);
@@ -29,8 +25,6 @@ var _checkbox = require('igroot/lib/checkbox');
 var _checkbox2 = _interopRequireDefault(_checkbox);
 
 require('igroot/lib/card/style');
-
-require('igroot/lib/table/style');
 
 require('igroot/lib/input-number/style');
 
@@ -52,6 +46,8 @@ var _yakaDatepicker = require('./yaka-datepicker/');
 
 var _yakaTimepicker = require('./yaka-timepicker/');
 
+var _yakaTable = require('./yaka-table/');
+
 var _yakaRadio = require('./yaka-radio/');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -69,7 +65,7 @@ exports.default = {
   Button: _button2.default,
   Input: _input2.default,
   InputNumber: _inputNumber2.default,
-  Table: _table2.default,
+  Table: _yakaTable.YakaTable,
   Card: _card2.default,
   DatePicker: _yakaDatepicker.YakaDatePicker,
   TextArea: _input2.default.TextArea

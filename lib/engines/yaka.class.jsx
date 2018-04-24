@@ -1,10 +1,7 @@
 import React, { Component, Children } from 'react'
-import { Button, Form } from 'igroot'
-import { streamTo, streamForm, readState, isReadState, streamWalk, streamFilter } from './../tool';
 import { functions, models, dataMap, layout, stateWalk } from './model';
 import defaultComponents from './../components/';
 import defaultLayoutComponents from './../layoutComponents/';
-import BsFetch from 'igroot-fetch'
 import extend from './../extend/'
 export class Yaka extends Component {
     constructor(props) {

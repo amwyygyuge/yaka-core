@@ -11,8 +11,6 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _tool = require('./../tool');
-
 var _model = require('./model');
 
 var _components = require('./../components/');
@@ -22,10 +20,6 @@ var _components2 = _interopRequireDefault(_components);
 var _layoutComponents = require('./../layoutComponents/');
 
 var _layoutComponents2 = _interopRequireDefault(_layoutComponents);
-
-var _igrootFetch = require('igroot-fetch');
-
-var _igrootFetch2 = _interopRequireDefault(_igrootFetch);
 
 var _extend = require('./../extend/');
 

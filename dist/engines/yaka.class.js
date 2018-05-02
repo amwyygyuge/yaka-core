@@ -127,6 +127,9 @@ var _initialiseProps = function _initialiseProps() {
     this.componentDidMount = function () {
         //载入初始表单数据
         _this2.initForm(_this2.initData);
+        setTimeout(function () {
+            _this2.initForm(_this2.initData);
+        }, 0);
         _this2.yakaDidMount();
     };
 
@@ -173,7 +176,7 @@ var _initialiseProps = function _initialiseProps() {
         _this2.dataMapWalk(_this2.state);
         setTimeout(function () {
             _this2.initForm(initData);
-        }, 100);
+        }, 0);
     };
 
     this.componentWillReceiveProps = function (nextProps) {

@@ -45,6 +45,7 @@ export class Yaka extends Component {
     componentDidMount = () => {
         //载入初始表单数据
         this.initForm(this.initData)
+        setTimeout(() => { this.initForm(this.initData) }, 0)        
         this.yakaDidMount()
 
     }
@@ -82,7 +83,7 @@ export class Yaka extends Component {
         this.stateWalk(layouts, initData)
         //载入初始表单数据
         this.dataMapWalk(this.state)
-        setTimeout(() => { this.initForm(initData) }, 100)
+        setTimeout(() => { this.initForm(initData) }, 0)
     }
 
     componentWillReceiveProps = (nextProps) => {

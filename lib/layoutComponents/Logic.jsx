@@ -1,5 +1,5 @@
 import React from 'react'
-export default function (ele, { yakaApis, form, bindingProps, componentCheck, elementWalk }) {
+export default function (ele, { yakaApis, bindingProps, componentCheck, elementWalk }) {
     const { value, components } = bindingProps(ele, yakaApis)
     if (Array.isArray(components)) {
         return <div>

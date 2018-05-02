@@ -6,7 +6,6 @@ Object.defineProperty(exports, "__esModule", {
 
 exports.default = function (ele, _ref) {
     var yakaApis = _ref.yakaApis,
-        form = _ref.form,
         bindingProps = _ref.bindingProps,
         componentCheck = _ref.componentCheck,
         elementWalk = _ref.elementWalk;

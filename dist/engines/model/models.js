@@ -22,7 +22,8 @@ var modelFactory = function modelFactory(model, yakaApis) {
         headers = _model$headers === undefined ? {} : _model$headers;
     var getState = yakaApis.getState,
         getProps = yakaApis.getProps,
-        formValueGettingFunction = yakaApis.formValueGettingFunction;
+        formValueGettingFunction = yakaApis.formValueGettingFunction,
+        getInitData = yakaApis.getInitData;
 
     Object.keys(headers).forEach(function (key) {
         var val = headers[key];
@@ -36,25 +37,31 @@ var modelFactory = function modelFactory(model, yakaApis) {
             }
         }
     });
-    if (params) {
-        Object.keys(params).forEach(function (key) {
-            var value = params[key];
-            if ((0, _tool.isReadState)(value)) {
-                var val = (0, _tool.readState)(value, getState());
-                params[key] = val;
-                return;
-            }
-            if (value.indexOf('#') !== -1) {
-                var _val = formValueGettingFunction(value.slice(1, value.length));
-                params[key] = _val;
-                return;
-            }
-            params[key] = value;
-        });
-    }
+
     return function () {
         var auto = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
 
+        if (params) {
+            Object.keys(params).forEach(function (key) {
+                var value = params[key];
+                if ((0, _tool.isReadState)(value)) {
+                    var val = (0, _tool.readState)(value, getState());
+                    params[key] = val;
+                    return;
+                }
+                if (value.indexOf('#') !== -1) {
+                    var _val = '';
+                    if (auto) {
+                        _val = getInitData()[value.slice(1, value.length)];
+                    } else {
+                        _val = formValueGettingFunction(value.slice(1, value.length));
+                    }
+                    params[key] = _val;
+                    return;
+                }
+                params[key] = value;
+            });
+        }
         if (type === 'get' || type === 'restful') {
             (0, _igrootFetch2.default)(url, { headers: headers, handleHttpErrors: function handleHttpErrors() {} }).get(params).then(function (res) {
                 (0, _tool.streamWalk)(streams, res, yakaApis);

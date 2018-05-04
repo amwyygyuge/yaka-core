@@ -37,14 +37,8 @@ export class YakaSelect extends Component {
             }
         }
         if (value === "" && mode === 'multiple') { _value = [] }
-
-        if (typeof _value !== 'object' || _value === null) {
-            _value = { key: _value, label: '测试' }
-        }
-        
         return <Select
             showSearch
-            labelInValue
             allowClear
             filterOption={this.handleFilterOption}
             {...props}

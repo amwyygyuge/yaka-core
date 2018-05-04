@@ -49,7 +49,7 @@ var modelFactory = function modelFactory(model, yakaApis) {
                     params[key] = val;
                     return;
                 }
-                if (value.indexOf('#') !== -1) {
+                if (value && value.indexOf('#') !== -1) {
                     var _val = '';
                     if (auto) {
                         _val = getInitData()[value.slice(1, value.length)];
@@ -64,11 +64,17 @@ var modelFactory = function modelFactory(model, yakaApis) {
         }
         if (type === 'get' || type === 'restful') {
             (0, _igrootFetch2.default)(url, { headers: headers, handleHttpErrors: function handleHttpErrors() {} }).get(params).then(function (res) {
+                if (code && code !== 0) {
+                    return;
+                }
                 (0, _tool.streamWalk)(streams, res, yakaApis);
             });
         }
         if (type === 'post') {
             (0, _igrootFetch2.default)(url, { headers: headers, handleHttpErrors: function handleHttpErrors() {} }).post(params).then(function (res) {
+                if (code && code !== 0) {
+                    return;
+                }
                 (0, _tool.streamWalk)(streams, res, yakaApis);
             });
         }

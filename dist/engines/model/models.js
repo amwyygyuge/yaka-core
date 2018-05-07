@@ -63,7 +63,8 @@ var modelFactory = function modelFactory(model, yakaApis) {
         }
         if (type === 'get' || type === 'restful') {
             (0, _igrootFetch2.default)(url, { headers: headers, handleHttpErrors: function handleHttpErrors() {} }).get(params).then(function (res) {
-                if (code && code.toString() !== '0') {
+                var code = res.code.toString();
+                if (code && code !== '0') {
                     return;
                 }
                 (0, _tool.streamWalk)(streams, res, yakaApis);
@@ -71,7 +72,8 @@ var modelFactory = function modelFactory(model, yakaApis) {
         }
         if (type === 'post') {
             (0, _igrootFetch2.default)(url, { headers: headers, handleHttpErrors: function handleHttpErrors() {} }).post(params).then(function (res) {
-                if (code && code.toString() !== '0') {
+                var code = res.code.toString();
+                if (code && code !== '0') {
                     return;
                 }
                 (0, _tool.streamWalk)(streams, res, yakaApis);

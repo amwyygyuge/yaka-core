@@ -12,7 +12,6 @@ var _igrootFetch2 = _interopRequireDefault(_igrootFetch);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// const BsFetch1 = BsFetch()
 var modelFactory = function modelFactory(model, yakaApis) {
     var type = model.type,
         params = model.params,
@@ -26,7 +25,7 @@ var modelFactory = function modelFactory(model, yakaApis) {
         getInitData = yakaApis.getInitData;
 
     Object.keys(headers).forEach(function (key) {
-        var val = headers[key];
+        var val = headers[key] ? headers[key].toString() : '';
         if ((0, _tool.isReadState)(val)) {
             headers[key] = (0, _tool.readState)(val, getState());
         }
@@ -43,7 +42,7 @@ var modelFactory = function modelFactory(model, yakaApis) {
 
         if (params) {
             Object.keys(params).forEach(function (key) {
-                var value = params[key];
+                var value = params[key].toString();
                 if ((0, _tool.isReadState)(value)) {
                     var val = (0, _tool.readState)(value, getState());
                     params[key] = val;
@@ -64,7 +63,7 @@ var modelFactory = function modelFactory(model, yakaApis) {
         }
         if (type === 'get' || type === 'restful') {
             (0, _igrootFetch2.default)(url, { headers: headers, handleHttpErrors: function handleHttpErrors() {} }).get(params).then(function (res) {
-                if (code && code !== 0) {
+                if (code && code.toString() !== '0') {
                     return;
                 }
                 (0, _tool.streamWalk)(streams, res, yakaApis);
@@ -72,7 +71,7 @@ var modelFactory = function modelFactory(model, yakaApis) {
         }
         if (type === 'post') {
             (0, _igrootFetch2.default)(url, { headers: headers, handleHttpErrors: function handleHttpErrors() {} }).post(params).then(function (res) {
-                if (code && code !== 0) {
+                if (code && code.toString() !== '0') {
                     return;
                 }
                 (0, _tool.streamWalk)(streams, res, yakaApis);

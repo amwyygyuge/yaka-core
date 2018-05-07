@@ -77,9 +77,6 @@ var bindingProps = function bindingProps(ele, yakaApis) {
     return props;
 };
 var componentFilter = function componentFilter(ele, yakaApis) {
-    if (!yakaApis) {
-        console.log(ele);
-    }
     var getState = yakaApis.getState,
         getComponent = yakaApis.getComponent,
         getForm = yakaApis.getForm,

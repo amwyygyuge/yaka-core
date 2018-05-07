@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 var getLogicMapComponent = function getLogicMapComponent(ele, initData) {
     var logicState = {};
     if (ele.component === 'Logic' && ele.props && ele.props.value) {
-        var key = ele.props.value;
+        var key = ele.props.value.toSring();
         if (key.indexOf('$') > -1) {
             var formKey = key.slice(1, key.length).split('.');
             var value = initData[formKey[0]] || '';

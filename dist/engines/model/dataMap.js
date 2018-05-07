@@ -14,6 +14,7 @@ var dataMap = function dataMap() {
     var getState = yakaApis.getState;
 
     Object.keys(dataMap).forEach(function (key) {
+        key = key.toString();
         _dataMap[key] = function () {
             var state = getState();
             var _dataMap$key = dataMap[key],

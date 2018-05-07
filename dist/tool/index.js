@@ -11,7 +11,7 @@ var _constants = require('constants');
 
 // 数据流入解析
 var streamTo = function streamTo(arr, obj, target) {
-    if (arr.length === 0) return obj;
+    if (Array.isArray(arr) && arr.length === 0) return obj;
     var _obj = {};
     if (target !== undefined) {
         _obj[arr.pop()] = target;
@@ -22,7 +22,7 @@ var streamTo = function streamTo(arr, obj, target) {
 };
 // 数据流出解析
 var streamForm = function streamForm(arr, obj, data) {
-    if (arr.length === 0) return obj;
+    if (Array.isArray(arr) && arr.length === 0) return obj;
     var _obj = {};
     if (data !== undefined) {
         _obj = data[arr.shift()];
@@ -37,7 +37,7 @@ var streamForm = function streamForm(arr, obj, data) {
 };
 // 读取state
 var readState = function readState(key, state) {
-    var redirect = key.slice(1, key.length).split('.');
+    var redirect = key.toString().slice(1, key.length).split('.');
     var data = streamForm(redirect, {}, state);
     if (typeof data === 'function') {
         return data();
@@ -49,17 +49,15 @@ var readState = function readState(key, state) {
 var isReadState = function isReadState() {
     var key = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
 
-
-    return key.indexOf('$') !== -1;
+    return key.toString().indexOf('$') !== -1;
 };
 // 数据分流
 var streamFilter = function streamFilter(streamIn, data) {
-
     var val = null;
     switch (typeof streamIn === 'undefined' ? 'undefined' : _typeof(streamIn)) {
         //数据别名
         case 'object':
-            val = streamForm(streamIn.path.split('.'), {}, data);
+            val = streamForm(streamIn.path.toString().split('.'), {}, data);
             if (streamIn.alias) {
                 Object.keys(streamIn.alias).forEach(function (aliasKey) {
                     var alias = streamIn.alias[aliasKey];
@@ -89,6 +87,7 @@ var streamWalk = function streamWalk(streams, data, yakaApis) {
         getProps = yakaApis.getProps;
 
     Object.keys(streams).forEach(function (key) {
+        key = key.toString();
         var val = streamFilter(streams[key], data);
         //表单数据流        
         if (key.indexOf('#') !== -1) {

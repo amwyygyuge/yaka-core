@@ -4,7 +4,7 @@ npm install yaka-core --save
 
 ```
 ## npm
-```
+```js
 import Yaka from 'yaka-core'
 const YakaForm = Yaka.YakaForm,
     YakaFormOnFlow = Yaka.YakaFormOnFlow,
@@ -16,7 +16,7 @@ const YakaForm = Yaka.YakaForm,
 
 请按需引用
 ## 使用
-```
+```js
 import React, { Component } from 'react';
 import Yaka from 'yaka-core'
 // yaka组件需另行安装 

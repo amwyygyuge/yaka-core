@@ -1,7 +1,5 @@
 import React, { Component, Children } from 'react'
 import { functions, models, dataMap, layout, stateWalk } from './model';
-import defaultComponents from './../components/';
-import defaultLayoutComponents from './../layoutComponents/';
 import extend from './../extend/'
 export class Yaka extends Component {
     constructor(props) {
@@ -12,8 +10,8 @@ export class Yaka extends Component {
         this.config = config
         this.layouts = config.layout
         this.dataMap = config.dataMap || {}
-        this.components = components ? components : defaultComponents
-        this.layoutComponents = layoutComponents ? layoutComponents : defaultLayoutComponents
+        this.components = components ? components : {}
+        this.layoutComponents = layoutComponents ? layoutComponents : {}
         this.form = form
         this.initData = config.initData || {}
         this.state = config.global || {}
@@ -45,7 +43,7 @@ export class Yaka extends Component {
     componentDidMount = () => {
         //载入初始表单数据
         this.initForm(this.initData)
-        setTimeout(() => { this.initForm(this.initData) }, 0)        
+        setTimeout(() => { this.initForm(this.initData) }, 0)
         this.yakaDidMount()
 
     }

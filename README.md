@@ -5,7 +5,7 @@ npm install yaka-core --save
 ```
 ## npm
 ```
-import Yaka, { components, layoutComponents } from 'yaka-core'
+import Yaka from 'yaka-core'
 const YakaForm = Yaka.YakaForm,
     YakaFormOnFlow = Yaka.YakaFormOnFlow,
     YakaComponent = Yaka.YakaComponent
@@ -18,7 +18,10 @@ const YakaForm = Yaka.YakaForm,
 ## 使用
 ```
 import React, { Component } from 'react';
-import Yaka, { components, layoutComponents } from 'yaka-core'
+import Yaka from 'yaka-core'
+// yaka组件需另行安装 
+import yakaComponents from 'yaka-components'
+const { components, layoutComponents } = yakaComponents
 import { config } from './config/'
 const YakaComponent = Yaka.YakaComponent
 
@@ -44,5 +47,7 @@ export default App;
 2. components yaka使用组件的引入接口
 3. layoutComponents yaka使用的布局组件的引入接口
 
+## yaka组件包地址
+[地址](https://github.com/amwyygyuge/yaka-components)
 ## 文档
 [文档](http://jr.baishancloud.com:8090/pages/viewpage.action?pageId=21341051)

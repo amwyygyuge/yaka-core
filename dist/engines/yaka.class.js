@@ -13,14 +13,6 @@ var _react2 = _interopRequireDefault(_react);
 
 var _model = require('./model');
 
-var _components = require('./../components/');
-
-var _components2 = _interopRequireDefault(_components);
-
-var _layoutComponents = require('./../layoutComponents/');
-
-var _layoutComponents2 = _interopRequireDefault(_layoutComponents);
-
 var _extend = require('./../extend/');
 
 var _extend2 = _interopRequireDefault(_extend);
@@ -53,8 +45,8 @@ var Yaka = exports.Yaka = function (_Component) {
         _this.config = config;
         _this.layouts = config.layout;
         _this.dataMap = config.dataMap || {};
-        _this.components = components ? components : _components2.default;
-        _this.layoutComponents = layoutComponents ? layoutComponents : _layoutComponents2.default;
+        _this.components = components ? components : {};
+        _this.layoutComponents = layoutComponents ? layoutComponents : {};
         _this.form = form;
         _this.initData = config.initData || {};
         _this.state = config.global || {};

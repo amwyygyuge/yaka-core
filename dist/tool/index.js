@@ -3,11 +3,8 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.streamFilter = exports.streamWalk = exports.isReadState = exports.readState = exports.streamForm = exports.streamTo = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-var _constants = require('constants');
 
 // 数据流入解析
 var streamTo = function streamTo(arr, obj, target) {
@@ -37,6 +34,9 @@ var streamForm = function streamForm(arr, obj, data) {
 };
 // 读取state
 var readState = function readState(key, state) {
+    if (!key || !state) {
+        return false;
+    }
     var redirect = key.toString().slice(1, key.length).split('.');
     var data = streamForm(redirect, {}, state);
     if (typeof data === 'function') {

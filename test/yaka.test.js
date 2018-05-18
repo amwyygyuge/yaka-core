@@ -15,20 +15,15 @@ describe('FileUploadInput render', () => {
     function renderedNames(wrapper) {
       return wrapper.find('TableRow').map(row => row.props().record.name);
     }
-    try {
-      const wrapper = mount(
-        <YakaComponent
-          components={components}
-          layoutComponents={layoutComponents}
-          config={conifg}
-        />
-      );
-      expect(toJson(wrapper)).not.toBeNull()
+    const wrapper = mount(
+      <YakaComponent
+        components={components}
+        layoutComponents={layoutComponents}
+        config={conifg}
+      />
+    );
+    expect(toJson(wrapper)).not.toBeNull()
 
-    } catch (e) {
-      throw Error(e)
-    }
-    // expect(toJson(wrapper)).toMatchSnapshot()
   })
 })
 

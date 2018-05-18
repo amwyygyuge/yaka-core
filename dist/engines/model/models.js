@@ -42,7 +42,7 @@ var modelFactory = function modelFactory(model, yakaApis) {
 
         if (params) {
             Object.keys(params).forEach(function (key) {
-                var value = params[key].toString();
+                var value = params[key] ? params[key].toString() : null;
                 if ((0, _tool.isReadState)(value)) {
                     var val = (0, _tool.readState)(value, getState());
                     params[key] = val;

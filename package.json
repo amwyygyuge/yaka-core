@@ -1,29 +1,42 @@
 {
   "name": "yaka-core",
   "version": "0.2.0",
-  "description": "",
-  "author": "",
+  "description": "a  engine of analysis json to react",
+  "author": "junxiong.cai",
   "license": "MIT",
+  "keywords": [
+    "react",
+    "json",
+    "igroot"
+  ],
   "dependencies": {
-    "chai": "^4.1.2",
+    "igroot": "1.1.5",
     "igroot-fetch": "1.2.2",
-    "react": "^16.2.0"
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2"
   },
   "engines": {
     "node": ">= 6.9.3",
     "npm": ">= 3"
   },
   "scripts": {
-    "dist": "babel --watch lib -d dist "
+    "dist": "babel --watch lib -d dist ",
+    "test": "jest --watch"
   },
   "files": [
     "dist"
   ],
   "main": "dist/index.js",
   "devDependencies": {
-    "babel-plugin-import": "^1.6.3",
+    "babel-plugin-import": "^1.7.0",
+    "babel-jest": "^22.4.3",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
-    "babel-preset-stage-2": "^6.24.1"
+    "babel-preset-stage-2": "^6.24.1",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
+    "enzyme-to-json": "^3.3.3",
+    "jest": "^22.4.3",
+    "jest-fetch-mock": "^1.6.0"
   }
 }

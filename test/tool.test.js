@@ -1,33 +1,31 @@
-var chai = require('chai');
-var expect = chai.expect;
 
-chai.should()
 const { isReadState, readState, streamFilter } = require('./../dist/tool')
 //
 describe('isReadState function test', function () {
     describe('numbner', function () {
         it('should be false', function () {
-            isReadState(100).should.equal(false)
+            expect(isReadState(100)).toBe(false)
         });
     });
     describe('string', function () {
+        
         it('should be false', function () {
-            isReadState("100").should.equal(false)
+            expect(isReadState("100")).toBe(false)
         });
     });
     describe('with $', function () {
         it('should be true', function () {
-            isReadState("$demo").should.equal(true)
+            expect(isReadState("$demo")).toBe(true)
         });
     });
     describe('array', function () {
         it('should be false', function () {
-            isReadState([1, 2, 3]).should.equal(false)
+            expect(isReadState([1, 2, 3])).toBe(false)
         });
     });
     describe('object', function () {
         it('should be false', function () {
-            isReadState({ name: "dawdwa" }).should.equal(false)
+            expect(isReadState({ name: "dawdwa" })).toBe(false)
         });
     });
 });
@@ -39,7 +37,7 @@ describe('readState function test', function () {
             const state = {
                 demo: "hahaha"
             }
-            readState(key, state).should.equal('hahaha')
+            expect(readState(key, state)).toBe('hahaha')
         })
     })
     describe('2 level', function () {
@@ -50,7 +48,7 @@ describe('readState function test', function () {
                     value: "hahaha"
                 }
             }
-            readState(key, state).should.equal('hahaha')
+            expect(readState(key, state)).toBe('hahaha')
         })
     })
     describe('3 level', function () {
@@ -63,14 +61,14 @@ describe('readState function test', function () {
                     }
                 }
             }
-            readState(key, state).should.equal('hahaha')
+            expect(readState(key, state)).toBe('hahaha')
         })
     })
     describe('state is undefined', function () {
         it('should equal false', function () {
             const key = '$demo.value'
             const state = undefined
-            readState(key, state).should.equal(false)
+            expect(readState(key, state)).toBe(false)
         })
     })
     describe('key is undefined', function () {
@@ -83,25 +81,117 @@ describe('readState function test', function () {
                     }
                 }
             }
-            readState(key, state).should.equal(false)
+            expect(readState(key, state)).toBe(false)
         })
     })
     describe('key  and state are undefined', function () {
         it('should equal false', function () {
             const key = undefined
             const state = undefined
-            readState(key, state).should.equal(false)
+            expect(readState(key, state)).toBe(false)
         })
     })
 })
 // streamFilter
 describe('streamFilter funciton test', function () {
-    describe('noral', function () {
-        it('should equal  demo', function () {
+    describe('booean', function () {
+        it('should equal  true', function () {
             const val = {
                 demo: "hahah"
             }
-            streamFilter()
+            expect(streamFilter(true, {})).toBe(true)
+        })
+    })
+    describe('self', function () {
+        it('should equal  val', function () {
+            const val = {
+                demo: "hahah"
+            }
+            expect(streamFilter("self", val)).toBe(val)
+        })
+    })
+    describe('string', function () {
+        it('should equal  hahha', function () {
+            const val = {
+                demo: {
+                    value: 'hahha'
+                }
+            }
+            expect(streamFilter("demo.value", val)).toBe('hahha')
+        })
+    })
+    describe('number', function () {
+        it('should equal  null', function () {
+            const val = {
+                demo: {
+                    value: 'hahha'
+                }
+            }
+            expect(streamFilter(10000, val)).toBeNull()
+        })
+    })
+    describe('object', function () {
+        it('should equal  null', function () {
+            const streamIn = {
+                test: "demo.value",
+                demo: {
+                    value: "id",
+                    name: "value"
+                }
+            }
+            const val = {
+                demo: {
+                    value: 'hahha'
+                }
+            }
+            expect(streamFilter(streamIn, val)).toBe(streamIn)
+        })
+    })
+    describe('path in object', function () {
+        it('should equal  null', function () {
+            const streamIn = {
+                path: "demo.value",
+                alias: {
+                    value: "id",
+                    name: "value"
+                }
+            }
+            const val = {
+                demo: {
+                    value: 'hahha'
+                }
+            }
+            expect(streamFilter(streamIn, val)).toBe("hahha")
+        })
+    })
+    describe('alias in object', function () {
+        it('should equal  null', function () {
+            const streamIn = {
+                path: "demo.value",
+                alias: {
+                    id: "value",
+                    value: "name"
+                }
+            }
+            const val = {
+                demo: {
+                    value: [
+                        {
+                            value: 1,
+                            name: '蔡俊雄'
+                        },
+                        {
+                            value: 1,
+                            name: '蔡俊雄'
+                        },
+                        {
+                            value: 1,
+                            name: '蔡俊雄'
+                        }
+                    ]
+                }
+            }
+            expect(streamFilter(streamIn, val)).toHaveLength(3)
         })
     })
 })

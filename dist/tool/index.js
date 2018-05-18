@@ -3,8 +3,11 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.streamFilter = exports.streamWalk = exports.isReadState = exports.readState = exports.streamForm = exports.streamTo = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _assert = require('assert');
 
 // 数据流入解析
 var streamTo = function streamTo(arr, obj, target) {
@@ -49,6 +52,9 @@ var readState = function readState(key, state) {
 var isReadState = function isReadState() {
     var key = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
 
+    if (!key) {
+        return false;
+    }
     return key.toString().indexOf('$') !== -1;
 };
 // 数据分流
@@ -57,23 +63,31 @@ var streamFilter = function streamFilter(streamIn, data) {
     switch (typeof streamIn === 'undefined' ? 'undefined' : _typeof(streamIn)) {
         //数据别名
         case 'object':
-            val = streamForm(streamIn.path.toString().split('.'), {}, data);
-            if (streamIn.alias) {
-                Object.keys(streamIn.alias).forEach(function (aliasKey) {
-                    var alias = streamIn.alias[aliasKey];
-                    val.map(function (item) {
-                        item[aliasKey] = item[alias];
-                        return item;
+            if (streamIn.path) {
+                val = streamForm(streamIn.path.toString().split('.'), {}, data);
+                if (streamIn.alias) {
+                    Object.keys(streamIn.alias).forEach(function (aliasKey) {
+                        var alias = streamIn.alias[aliasKey];
+                        Array.isArray(val) && val.map(function (item) {
+                            item[aliasKey] = item[alias];
+                            return item;
+                        });
                     });
-                });
+                }
+                return val;
+            } else {
+                return streamIn;
             }
-            return val;
         //布尔类型
         case 'boolean':
             return streamIn;
         case 'string':
-            val = streamIn.indexOf('.') !== -1 ? streamForm(streamIn.split('.'), {}, data) : data;
-            return val;
+            if (streamIn === 'self') {
+                return data;
+            } else {
+                val = streamIn.indexOf('.') !== -1 ? streamForm(streamIn.split('.'), {}, data) : streamIn;
+                return val;
+            }
         default:
             return val;
     }

@@ -22,8 +22,7 @@ describe('FileUploadInput render', () => {
         config={conifg}
       />
     );
-    expect(toJson(wrapper)).not.toBeNull()
-
+    expect(toJson(wrapper))
   })
 })
 

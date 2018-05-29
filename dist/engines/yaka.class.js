@@ -38,19 +38,21 @@ var Yaka = exports.Yaka = function (_Component) {
         var config = props.config,
             components = props.components,
             layoutComponents = props.layoutComponents,
-            form = props.form;
+            form = props.form,
+            mountFunctions = props.mountFunctions;
 
         _this.functions = {};
         _this.rules = {};
         _this.config = config;
         _this.layouts = config.layout;
         _this.dataMap = config.dataMap || {};
-        _this.components = components ? components : {};
-        _this.layoutComponents = layoutComponents ? layoutComponents : {};
+        _this.components = components || {};
+        _this.layoutComponents = layoutComponents || {};
         _this.form = form;
         _this.initData = config.initData || {};
         _this.state = config.global || {};
         _this.extend = _extend2.default;
+        _this.mountFunctions = mountFunctions || {};
         _this.logicState = {};
         _this.yakaApis = {
             formValueSettingFunction: function formValueSettingFunction(val) {
@@ -79,6 +81,9 @@ var Yaka = exports.Yaka = function (_Component) {
             },
             getProps: function getProps() {
                 return _this.props;
+            },
+            getMountFunctions: function getMountFunctions() {
+                return _this.mountFunctions;
             }
         };
         return _this;

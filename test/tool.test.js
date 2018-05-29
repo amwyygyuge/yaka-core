@@ -1,5 +1,6 @@
 
-const { isReadState, readState, streamFilter } = require('./../dist/tool')
+const { isReadState, readState } = require('./../dist/tool')
+const { streamFilter } = require('./../dist/engines/model/stream')
 //
 describe('isReadState function test', function () {
     describe('numbner', function () {
@@ -8,7 +9,7 @@ describe('isReadState function test', function () {
         });
     });
     describe('string', function () {
-        
+
         it('should be false', function () {
             expect(isReadState("100")).toBe(false)
         });

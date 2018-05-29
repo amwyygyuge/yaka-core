@@ -1,0 +1,125 @@
+{
+    "layout": [
+        {
+            "name": "h1",
+            "ele": "h1",
+            "text": "$title"
+        },
+        {
+            "col": {
+                "span": 24
+            },
+            "name": "formCard",
+            "ele": "Card",
+            "props": {
+                "title": "日志系统服务器采购申请"
+            },
+            "subs": [
+                {
+                    "name": "form",
+                    "ele": "Form",
+                    "props": {
+                        "colWidth": 8,
+                        "labelCol": {
+                            "span": 8
+                        },
+                        "wrapperCol": {
+                            "span": 16
+                        },
+                        "gutter": 30
+                    },
+                    "subs": [
+                        {
+                            "name": "name",
+                            "label": "申请人",
+                            "ele": "Input",
+                            "props": {
+                                "onChange": "*titleChange"
+                            },
+                            "rules": [
+                                {
+                                    "required": true,
+                                    "message": "请填写申请人"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "demo",
+            "ele": "Button",
+            "props": {
+                "onClick": "#buttonCLick"
+            },
+            "init": {
+                "state": {
+                    "demo": "value"
+                }
+            }
+        }
+    ],
+    "init": {
+        "functions": {
+            "streamsFunction": {
+                "type": "streams",
+                "definition": {
+                    "$bumen.options": {
+                        "path": "data.org",
+                        "alias": {
+                            "label": "label",
+                            "value": "value"
+                        }
+                    },
+                    "$test.options": "data.org"
+                }
+            },
+            "fetchFunction": {
+                "type": "fetch",
+                "definition": {
+                    "headers": {
+                        "aa": "@test",
+                        "state": "$demo",
+                        "string": "string"
+                    },
+                    "type": "restful",
+                    "url": "http://xingyang.com/re/localdns",
+                    "params": {
+                        "demo": "$title.value",
+                        "test": "#name"
+                    },
+                    "streams": {
+                        "$bumen.options": {
+                            "path": "data.org",
+                            "alias": {
+                                "label": "label",
+                                "value": "value"
+                            }
+                        },
+                        "$test.options": "data.org"
+                    }
+                }
+            }
+        },
+        "state": {
+            "title": "标题"
+        },
+        "form": {
+            "name": "测试"
+        },
+        "watch": {
+            "title":{
+                "run":"#demo"
+            }
+        }
+    },
+    "mounted": {
+        "run": {
+            "demo": {
+                "param": 1
+            },
+            "fetchFunction": {}
+        }
+    }
+}

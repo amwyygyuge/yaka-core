@@ -10,6 +10,14 @@ var _igrootFetch = require('igroot-fetch');
 
 var _igrootFetch2 = _interopRequireDefault(_igrootFetch);
 
+var _mountFunctions2 = require('./mountFunctions');
+
+var _mountFunctions3 = _interopRequireDefault(_mountFunctions2);
+
+var _stream = require('./stream');
+
+var _stream2 = _interopRequireDefault(_stream);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var modelFactory = function modelFactory(model, yakaApis) {
@@ -18,7 +26,8 @@ var modelFactory = function modelFactory(model, yakaApis) {
         url = model.url,
         streams = model.streams,
         _model$headers = model.headers,
-        headers = _model$headers === undefined ? {} : _model$headers;
+        headers = _model$headers === undefined ? {} : _model$headers,
+        mountFunctions = model.mountFunctions;
     var getState = yakaApis.getState,
         getProps = yakaApis.getProps,
         formValueGettingFunction = yakaApis.formValueGettingFunction,
@@ -67,7 +76,8 @@ var modelFactory = function modelFactory(model, yakaApis) {
                 if (code && code !== '0') {
                     return;
                 }
-                (0, _tool.streamWalk)(streams, res, yakaApis);
+                mountFunctions && (0, _mountFunctions3.default)(mountFunctions, res, yakaApis);
+                streams && (0, _stream2.default)(streams, res, yakaApis);
             });
         }
         if (type === 'post') {
@@ -76,7 +86,8 @@ var modelFactory = function modelFactory(model, yakaApis) {
                 if (code && code !== '0') {
                     return;
                 }
-                (0, _tool.streamWalk)(streams, res, yakaApis);
+                mountFunctions && (0, _mountFunctions3.default)(mountFunctions, res, yakaApis);
+                streams && (0, _stream2.default)(streams, res, yakaApis);
             });
         }
     };

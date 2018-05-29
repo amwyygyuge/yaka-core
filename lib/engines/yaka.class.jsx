@@ -4,18 +4,19 @@ import extend from './../extend/'
 export class Yaka extends Component {
     constructor(props) {
         super()
-        const { config, components, layoutComponents, form } = props
+        const { config, components, layoutComponents, form, mountFunctions } = props
         this.functions = {}
         this.rules = {}
         this.config = config
         this.layouts = config.layout
         this.dataMap = config.dataMap || {}
-        this.components = components ? components : {}
-        this.layoutComponents = layoutComponents ? layoutComponents : {}
+        this.components = components || {}
+        this.layoutComponents = layoutComponents || {}
         this.form = form
         this.initData = config.initData || {}
         this.state = config.global || {}
         this.extend = extend
+        this.mountFunctions = mountFunctions || {}
         this.logicState = {}
         this.yakaApis = {
             formValueSettingFunction: (val) => this.form.setFieldsValue(val),
@@ -28,7 +29,8 @@ export class Yaka extends Component {
                 return { components: this.components, layoutComponents: this.layoutComponents, extend: this.extend }
             },
             getInitData: () => this.initData,
-            getProps: () => this.props
+            getProps: () => this.props,
+            getMountFunctions: () => this.mountFunctions
         }
     }
 

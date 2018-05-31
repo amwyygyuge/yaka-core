@@ -109,8 +109,13 @@
             "name": "测试"
         },
         "watch": {
-            "title":{
-                "run":"#demo"
+            "title": {
+                "run": "#demo"
+            }
+        },
+        "event": {
+            "demo": {
+                "onCLick": "#buttonCLick"
             }
         }
     },

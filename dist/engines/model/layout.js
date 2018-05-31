@@ -43,38 +43,39 @@ var componentCheck = function componentCheck(ele) {
         return true;
     }
 };
-var bindingProps = function bindingProps(ele, yakaApis) {
-    var getState = yakaApis.getState,
-        getFunction = yakaApis.getFunction,
-        getProps = yakaApis.getProps;
+var bindingProps = function bindingProps(_ref, _ref2) {
+    var name = _ref.name,
+        _ref$props = _ref.props,
+        props = _ref$props === undefined ? {} : _ref$props;
+    var getState = _ref2.getState,
+        getFunction = _ref2.getFunction,
+        getProps = _ref2.getProps;
 
-    var props = { key: ele.name };
-    if (ele.props) {
-        var _state = Object.assign({}, ele.props);
-        Object.keys(ele.props).forEach(function (key) {
-            if (typeof ele.props[key] === 'string') {
+    var _state = Object.assign({ key: name }, props);
+    if (props) {
+        Object.keys(props).forEach(function (key) {
+            if (typeof props[key] === 'string') {
                 //重定向到state
-                if ((0, _tool.isReadState)(ele.props[key])) {
-                    _state['' + key] = (0, _tool.readState)(ele.props[key], getState());
+                if ((0, _tool.isReadState)(props[key])) {
+                    _state['' + key] = (0, _tool.readState)(props[key], getState());
                     return false;
                 }
                 // 绑定函数
-                if (ele.props[key].indexOf('*') !== -1) {
-                    var redirect = ele.props[key].slice(1, ele.props[key].length);
+                if (props[key].indexOf('*') !== -1) {
+                    var redirect = props[key].slice(1, props[key].length);
                     _state['' + key] = getFunction()[redirect];
                     return false;
                 }
                 // 绑定外部props
-                if (ele.props[key].indexOf('@') !== -1) {
-                    var _redirect = ele.props[key].slice(1, ele.props[key].length);
+                if (props[key].indexOf('@') !== -1) {
+                    var _redirect = props[key].slice(1, props[key].length);
                     _state['' + key] = getProps()[_redirect];
                     return false;
                 }
             }
         });
-        Object.assign(props, _state);
     }
-    return props;
+    return _state;
 };
 var componentFilter = function componentFilter(ele, yakaApis) {
     var getState = yakaApis.getState,

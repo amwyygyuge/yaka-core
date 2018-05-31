@@ -16,6 +16,9 @@ exports.default = function (ele, _ref) {
         form = _ref.form,
         bindingProps = _ref.bindingProps,
         yakaApis = _ref.yakaApis;
+    var name = ele.name,
+        value = ele.value,
+        rules = ele.rules;
     var Editor = components.Editor;
 
     var FormItem = _form2.default.Item;
@@ -24,10 +27,10 @@ exports.default = function (ele, _ref) {
     var props = bindingProps(ele, yakaApis);
     return _react2.default.createElement(
         FormItem,
-        { key: ele.name },
-        getFieldDecorator('' + ele.name, {
-            initialValue: ele.value ? ele.value : null,
-            rules: ele.rules ? ele.rules : null
+        { key: name },
+        getFieldDecorator('' + name, {
+            initialValue: value ? value : null,
+            rules: rules ? rules : null
         })(_react2.default.createElement(Editor, props))
     );
 };

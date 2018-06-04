@@ -75,7 +75,7 @@ var YakaForm = exports.YakaForm = function (_Yaka) {
             return _react2.default.createElement(
                 'div',
                 null,
-                (0, _model.layout)(this.layouts, this.yakaApis),
+                (0, _model.layout)(this.layout, this.yakaApis),
                 this.props.onSubmit ? _react2.default.createElement(
                     'div',
                     { style: { textAlign: 'center', margin: '15px 0' } },

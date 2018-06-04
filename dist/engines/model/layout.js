@@ -83,7 +83,8 @@ var componentFilter = function componentFilter(item, yakaApis) {
         getProps = yakaApis.getProps;
     var ele = item.ele,
         subs = item.subs,
-        text = item.text;
+        text = item.text,
+        eleGroup = item.eleGroup;
 
     var props = bindingProps(item, yakaApis);
     if (props.show === false) {

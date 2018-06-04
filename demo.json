@@ -63,7 +63,7 @@
     "init": {
         "functions": {
             "streamsFunction": {
-                "type": "streams",
+                "type": "stream",
                 "definition": {
                     "$bumen.options": {
                         "path": "data.org",
@@ -76,7 +76,7 @@
                 }
             },
             "fetchFunction": {
-                "type": "fetch",
+                "type": "yakaFetch",
                 "definition": {
                     "headers": {
                         "aa": "@test",
@@ -105,7 +105,7 @@
         "state": {
             "title": "标题"
         },
-        "form": {
+        "formValue": {
             "name": "测试"
         },
         "watch": {

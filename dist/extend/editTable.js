@@ -4,7 +4,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-exports.default = function (ele, _ref) {
+exports.default = function (item, _ref) {
     var yakaApis = _ref.yakaApis,
         elementWalk = _ref.elementWalk,
         componentCheck = _ref.componentCheck,
@@ -13,26 +13,27 @@ exports.default = function (ele, _ref) {
         form = _ref.form,
         bindingProps = _ref.bindingProps;
     var EditTable = components.EditTable;
-    var _ele$props = ele.props,
-        columns = _ele$props.columns,
-        value = _ele$props.value,
-        scrollWidth = _ele$props.scrollWidth,
-        add = _ele$props.add,
-        remove = _ele$props.remove,
-        exportExcel = _ele$props.exportExcel;
+    var name = item.name,
+        props = item.props;
+    var columns = props.columns,
+        value = props.value,
+        scrollWidth = props.scrollWidth,
+        add = props.add,
+        remove = props.remove,
+        exportExcel = props.exportExcel;
 
-    var props = {
+    var _props = {
         columns: columns,
-        value: initData[ele.name] ? initData[ele.name] : value ? value : null,
-        ele: ele,
-        key: ele.name,
+        value: initData[name] ? initData[name] : value ? value : null,
+        ele: item,
+        key: name,
         scrollWidth: scrollWidth,
         add: add,
         remove: remove,
         exportExcel: exportExcel,
         yakaApis: yakaApis, elementWalk: elementWalk, componentCheck: componentCheck, initData: initData, components: components, form: form, bindingProps: bindingProps
     };
-    return _react2.default.createElement(EditTable, props);
+    return _react2.default.createElement(EditTable, _props);
 };
 
 var _react = require('react');

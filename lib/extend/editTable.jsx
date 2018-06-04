@@ -1,19 +1,22 @@
 
 import React from 'react'
 
-export default function (ele, { yakaApis, elementWalk, componentCheck, initData, components, form, bindingProps }) {
+export default function (item, { yakaApis, elementWalk, componentCheck, initData, components, form, bindingProps }) {
+
     const { EditTable } = components
-    const { columns, value, scrollWidth, add, remove, exportExcel } = ele.props
-    const props = {
+
+    const { name, props } = item
+    const { columns, value, scrollWidth, add, remove, exportExcel } = props
+    const _props = {
         columns,
-        value: initData[ele.name] ? initData[ele.name] : value ? value : null,
-        ele,
-        key: ele.name,
+        value: initData[name] ? initData[name] : value ? value : null,
+        ele: item,
+        key: name,
         scrollWidth,
         add,
         remove,
         exportExcel,
         yakaApis, elementWalk, componentCheck, initData, components, form, bindingProps
     }
-    return <EditTable  {...props} />
+    return <EditTable  {..._props} />
 }

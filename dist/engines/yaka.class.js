@@ -31,29 +31,74 @@ var Yaka = exports.Yaka = function (_Component) {
     function Yaka(props) {
         _classCallCheck(this, Yaka);
 
+        // yaka props解构
         var _this = _possibleConstructorReturn(this, (Yaka.__proto__ || Object.getPrototypeOf(Yaka)).call(this));
 
         _initialiseProps.call(_this);
 
         var config = props.config,
-            components = props.components,
-            layoutComponents = props.layoutComponents,
+            _props$components = props.components,
+            components = _props$components === undefined ? {} : _props$components,
+            _props$layoutComponen = props.layoutComponents,
+            layoutComponents = _props$layoutComponen === undefined ? {} : _props$layoutComponen,
             form = props.form,
-            mountFunctions = props.mountFunctions;
+            _props$mountFunctions = props.mountFunctions,
+            mountFunctions = _props$mountFunctions === undefined ? {} : _props$mountFunctions,
+            _props$functionTempla = props.functionTemplates,
+            functionTemplates = _props$functionTempla === undefined ? {} : _props$functionTempla;
+        // config 对象解构
 
-        _this.functions = {};
-        _this.rules = {};
-        _this.config = config;
-        _this.layouts = config.layout;
-        _this.dataMap = config.dataMap || {};
-        _this.components = components || {};
-        _this.layoutComponents = layoutComponents || {};
+        var _config$init = config.init,
+            init = _config$init === undefined ? {} : _config$init,
+            _config$layout = config.layout,
+            layout = _config$layout === undefined ? [] : _config$layout,
+            _config$mounted = config.mounted,
+            mounted = _config$mounted === undefined ? {} : _config$mounted,
+            _config$eleGroup = config.eleGroup,
+            eleGroup = _config$eleGroup === undefined ? {} : _config$eleGroup;
+        // init 对象解构
+
+        var _init$functions = init.functions,
+            functions = _init$functions === undefined ? {} : _init$functions,
+            _init$state = init.state,
+            state = _init$state === undefined ? {} : _init$state,
+            _init$watch = init.watch,
+            watch = _init$watch === undefined ? {} : _init$watch,
+            _init$event = init.event,
+            event = _init$event === undefined ? {} : _init$event,
+            _init$formValue = init.formValue,
+            formValue = _init$formValue === undefined ? {} : _init$formValue;
+        // 表单实力
+
         _this.form = form;
-        _this.initData = config.initData || {};
-        _this.state = config.global || {};
+        // 表单规则
+        _this.rules = {};
+        // 配置
+        _this.config = config;
+        // 代码片段
+        _this.eleGroup = eleGroup;
+        // 挂载声明周期钩子
+        _this.mounted = mounted;
+        // 布局
+        _this.layout = layout;
+        // 组件对象
+        _this.components = components;
+        _this.layoutComponents = layoutComponents;
+        // 表单对象
+        _this.form = form;
+        // 表单初始值
+        _this.formValue = formValue;
+        // state 初始化全局变量
+        _this.state = state;
+        _this.props = props;
+        // 特殊处理
         _this.extend = _extend2.default;
-        _this.mountFunctions = mountFunctions || {};
+        // TODO   数据监听
+        _this.watch = {};
+        // TODO 事件代理
+        _this.event = {};
         _this.logicState = {};
+        // 引擎api
         _this.yakaApis = {
             formValueSettingFunction: function formValueSettingFunction(val) {
                 return _this.form.setFieldsValue(val);
@@ -68,7 +113,7 @@ var Yaka = exports.Yaka = function (_Component) {
                 return _this.state;
             },
             getFunction: function getFunction() {
-                return _this.functions;
+                return _this.mountFunctions;
             },
             getForm: function getForm() {
                 return _this.form;
@@ -77,22 +122,20 @@ var Yaka = exports.Yaka = function (_Component) {
                 return { components: _this.components, layoutComponents: _this.layoutComponents, extend: _this.extend };
             },
             getInitData: function getInitData() {
-                return _this.initData;
+                return _this.formValue;
             },
             getProps: function getProps() {
                 return _this.props;
-            },
-            getMountFunctions: function getMountFunctions() {
-                return _this.mountFunctions;
             }
-        };
+            // 挂载函数
+        };_this.mountFunctions = _this.functionsWalk(functions, functionTemplates, mountFunctions, _this.yakaApis);
         return _this;
     }
 
     _createClass(Yaka, [{
         key: 'render',
         value: function render() {
-            return (0, _model.layout)(this.layouts, this.yakaApis);
+            return (0, _model.layout)(this.layout, this.yakaApis);
         }
 
         // 数据载入
@@ -118,38 +161,44 @@ var _initialiseProps = function _initialiseProps() {
     var _this2 = this;
 
     this.componentWillMount = function () {
-        _this2.init();
+        _this2.yakaInit();
     };
 
     this.componentDidMount = function () {
-        //载入初始表单数据
-        _this2.initForm(_this2.initData);
+        var mountFunctions = _this2.mountFunctions,
+            formValue = _this2.formValue,
+            mounted = _this2.mounted;
+        // 初始化表单数据
+
+        _this2.initForm(formValue);
         setTimeout(function () {
-            _this2.initForm(_this2.initData);
+            _this2.initForm(formValue);
         }, 0);
+        // 运行挂载之后的函数
+        _this2.yakaMounted(mounted, mountFunctions);
         _this2.yakaDidMount();
     };
 
     this.yakaDidMount = function () {};
 
-    this.init = function () {
-        var config = _this2.config,
-            layouts = _this2.layouts,
-            initData = _this2.initData,
-            state = _this2.state;
-        var models = config.models,
-            functions = config.functions;
-        //函数遍历
-
-        _this2.functionsWalk(functions);
-        //函数绑定
-        //state遍历
-        _this2.stateWalk(layouts, initData);
-        //数据映射遍历
-        //model遍历
-        _this2.modelWalk(models);
-        _this2.dataMapWalk(state);
+    this.yakaInit = function () {
         _this2.yakaWillMount();
+    };
+
+    this.yakaMounted = function () {
+        var mounted = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+        var mountFunctions = arguments[1];
+        var _mounted$run = mounted.run,
+            run = _mounted$run === undefined ? {} : _mounted$run;
+
+        Object.keys(run).forEach(function (key) {
+            var _funtion = mountFunctions[key];
+            if (_funtion) {
+                _funtion();
+            } else {
+                console.error('mounted run ' + key + ' is not a defined!');
+            }
+        });
     };
 
     this.yakaWillMount = function () {};
@@ -186,14 +235,11 @@ var _initialiseProps = function _initialiseProps() {
 
     this.initForm = function () {
         var initData = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
         _this2.form.setFieldsValue(initData);
     };
 
-    this.functionsWalk = function () {
-        var initFunctions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-        Object.assign(_this2.functions, (0, _model.functions)(initFunctions, _this2.yakaApis));
+    this.functionsWalk = function (initFunctions, functionTemplates, mountFunctions, yakaApis) {
+        return Object.assign((0, _model.registerMountFunctions)(mountFunctions, yakaApis), (0, _model.registerFunctions)(initFunctions, functionTemplates, yakaApis));
     };
 
     this.modelWalk = function () {

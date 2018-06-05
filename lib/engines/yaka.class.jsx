@@ -9,7 +9,7 @@ export class Yaka extends Component {
         // config 对象解构
         const { init = {}, layout = [], mounted = {}, eleGroup = {} } = config
         // init 对象解构
-        const { functions = {}, state = {}, watch = {}, event = {}, formValue = {} } = init
+        const { functions = {}, state = {}, watch = {},  formValue = {} } = init
         // 表单实力
         this.form = form
         // 表单规则
@@ -36,8 +36,6 @@ export class Yaka extends Component {
         this.extend = extend
         // TODO   数据监听
         this.watch = {}
-        // TODO 事件代理
-        this.event = {}
         this.logicState = {}
         // 引擎api
         this.yakaApis = {
@@ -51,15 +49,18 @@ export class Yaka extends Component {
                 return { components: this.components, layoutComponents: this.layoutComponents, extend: this.extend }
             },
             getInitData: () => this.formValue,
-            getProps: () => this.props
+            getProps: () => this.props,
         }
+
         // 挂载函数
         this.mountFunctions = this.functionsWalk(functions, functionTemplates, mountFunctions, this.yakaApis)
     }
 
     render() {
-        return layout(this.layout, this.yakaApis)
+        return this.yakaRender()
     }
+
+    yakaRender = () => layout(this.layout, this.yakaApis, 1)
 
     componentWillMount = () => {
         this.yakaInit()

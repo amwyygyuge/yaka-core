@@ -10,6 +10,8 @@ var _react2 = _interopRequireDefault(_react);
 
 var _tool = require('./../../tool');
 
+var _constants = require('constants');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var bindingText = function bindingText(text, getState, getProps) {
@@ -49,7 +51,7 @@ var bindingProps = function bindingProps(_ref, _ref2) {
         getFunction = _ref2.getFunction,
         getProps = _ref2.getProps;
 
-    var _state = Object.assign({ key: name }, props);
+    var _state = props;
     if (props) {
         Object.keys(props).forEach(function (key) {
             if (typeof props[key] === 'string') {
@@ -75,7 +77,7 @@ var bindingProps = function bindingProps(_ref, _ref2) {
     }
     return _state;
 };
-var componentFilter = function componentFilter(item, yakaApis) {
+var componentFilter = function componentFilter(item, yakaApis, level, index) {
     var getState = yakaApis.getState,
         getComponent = yakaApis.getComponent,
         getForm = yakaApis.getForm,
@@ -84,9 +86,12 @@ var componentFilter = function componentFilter(item, yakaApis) {
     var ele = item.ele,
         subs = item.subs,
         text = item.text,
-        eleGroup = item.eleGroup;
+        eleGroup = item.eleGroup,
+        name = item.name;
 
+    if (name) {}
     var props = bindingProps(item, yakaApis);
+    props.key = level + '.' + index;
     if (props.show === false) {
         return null;
     }
@@ -99,34 +104,35 @@ var componentFilter = function componentFilter(item, yakaApis) {
     var apis = { yakaApis: yakaApis, elementWalk: elementWalk, componentCheck: componentCheck, initData: getInitData(), components: components, form: getForm(), bindingProps: bindingProps
         //布局组件
     };if (layoutComponents[ele]) {
-        return layoutComponents[ele](item, apis);
+        return layoutComponents[ele](item, apis, props);
     }
     //组件扩展
     if (extend[ele]) {
-        return extend[ele](item, apis);
+        return extend[ele](item, apis, props);
     }
     //常规组件
     var children = bindingText(text, getState, getProps),
         component = components[ele] ? components[ele] : ele;
     if (subs) {
-        Object.assign(children, elementWalk(subs, yakaApis));
+        Object.assign(children, elementWalk(subs, yakaApis, props.key));
     }
-
-    var Element = _react2.default.createElement(component, props, children);
+    var Element = null;
     if (ele === 'Input' || ele === 'input' || ele === 'TextArea') {
         Element = _react2.default.createElement(component, props);
+    } else {
+        Element = _react2.default.createElement(component, props, children);
     }
     return Element;
 };
-var elementWalk = function elementWalk(layouts, yakaApis) {
+var elementWalk = function elementWalk(layouts, yakaApis, level) {
     if (!Array.isArray(layouts)) {
         throw Error('children must be an array!');
     }
-    return layouts.map(function (item) {
+    return layouts.map(function (item, index) {
         var ele = item.ele;
 
         if (!ele || !componentCheck(ele)) return false;
-        return componentFilter(item, yakaApis);
+        return componentFilter(item, yakaApis, level, index);
     });
 };
 exports.default = elementWalk;

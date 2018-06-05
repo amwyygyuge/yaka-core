@@ -64,8 +64,6 @@ var Yaka = exports.Yaka = function (_Component) {
             state = _init$state === undefined ? {} : _init$state,
             _init$watch = init.watch,
             watch = _init$watch === undefined ? {} : _init$watch,
-            _init$event = init.event,
-            event = _init$event === undefined ? {} : _init$event,
             _init$formValue = init.formValue,
             formValue = _init$formValue === undefined ? {} : _init$formValue;
         // 表单实力
@@ -95,8 +93,6 @@ var Yaka = exports.Yaka = function (_Component) {
         _this.extend = _extend2.default;
         // TODO   数据监听
         _this.watch = {};
-        // TODO 事件代理
-        _this.event = {};
         _this.logicState = {};
         // 引擎api
         _this.yakaApis = {
@@ -127,6 +123,7 @@ var Yaka = exports.Yaka = function (_Component) {
             getProps: function getProps() {
                 return _this.props;
             }
+
             // 挂载函数
         };_this.mountFunctions = _this.functionsWalk(functions, functionTemplates, mountFunctions, _this.yakaApis);
         return _this;
@@ -135,7 +132,7 @@ var Yaka = exports.Yaka = function (_Component) {
     _createClass(Yaka, [{
         key: 'render',
         value: function render() {
-            return (0, _model.layout)(this.layout, this.yakaApis);
+            return this.yakaRender();
         }
 
         // 数据载入
@@ -159,6 +156,10 @@ var Yaka = exports.Yaka = function (_Component) {
 
 var _initialiseProps = function _initialiseProps() {
     var _this2 = this;
+
+    this.yakaRender = function () {
+        return (0, _model.layout)(_this2.layout, _this2.yakaApis, 1);
+    };
 
     this.componentWillMount = function () {
         _this2.yakaInit();

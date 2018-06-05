@@ -23,8 +23,6 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _model = require('./../model');
-
 var _yaka = require('./../yaka.class');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -75,7 +73,7 @@ var YakaForm = exports.YakaForm = function (_Yaka) {
             return _react2.default.createElement(
                 'div',
                 null,
-                (0, _model.layout)(this.layout, this.yakaApis),
+                this.yakaRender(),
                 this.props.onSubmit ? _react2.default.createElement(
                     'div',
                     { style: { textAlign: 'center', margin: '15px 0' } },

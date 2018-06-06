@@ -25,7 +25,7 @@ var yakaFetch = function yakaFetch(model, e, yakaApis) {
         headers = _model$headers === undefined ? {} : _model$headers,
         mountFunctions = model.mountFunctions;
     var getState = yakaApis.getState,
-        getProps = yakaApis.getProps,
+        getMountData = yakaApis.getMountData,
         formValueGettingFunction = yakaApis.formValueGettingFunction,
         getInitData = yakaApis.getInitData;
 
@@ -36,8 +36,8 @@ var yakaFetch = function yakaFetch(model, e, yakaApis) {
         }
         if (val.indexOf('@') !== -1) {
             var name = val.slice(1, val.length);
-            if (getProps()[name]) {
-                headers[key] = getProps()[name];
+            if (getMountData()[name]) {
+                headers[key] = getMountData()[name];
             }
         }
     });

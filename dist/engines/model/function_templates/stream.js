@@ -55,7 +55,7 @@ var streamWalk = function streamWalk() {
         var formValueSettingFunction = yakaApis.formValueSettingFunction,
             stateValueSettingFunction = yakaApis.stateValueSettingFunction,
             formValueGettingFunction = yakaApis.formValueGettingFunction,
-            getProps = yakaApis.getProps;
+            getMountData = yakaApis.getMountData;
 
         Object.keys(streams).forEach(function (key) {
             key = key.toString();
@@ -81,7 +81,7 @@ var streamWalk = function streamWalk() {
             }
             // 外部接口接受
             if (key.indexOf('@') !== -1) {
-                var props = getProps();
+                var props = getMountData();
                 var name = key.slice(1, key.length);
                 typeof props[name] === 'function' ? props[name](val) : console.error('props is not a funciton!');
             }

@@ -110,7 +110,7 @@
         },
         "watch": {
             "title": {
-                "run": "#demo"
+                "run": "demo"
             }
         },
         "event": {

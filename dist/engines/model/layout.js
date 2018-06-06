@@ -14,7 +14,7 @@ var _constants = require('constants');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var bindingText = function bindingText(text, getState, getProps) {
+var bindingText = function bindingText(text, getState, getMountData) {
     var children = [];
     if (text) {
         if ((0, _tool.isReadState)(text)) {
@@ -25,7 +25,7 @@ var bindingText = function bindingText(text, getState, getProps) {
             // @
             if (text.indexOf('@') !== -1) {
                 var name = text.slice(1, text.length);
-                var props = getProps();
+                var props = getMountData();
                 children.push(props[name]);
             } else {
                 // 普通数据
@@ -49,9 +49,9 @@ var bindingProps = function bindingProps(_ref, _ref2) {
         props = _ref$props === undefined ? {} : _ref$props;
     var getState = _ref2.getState,
         getFunction = _ref2.getFunction,
-        getProps = _ref2.getProps;
+        getMountData = _ref2.getMountData;
 
-    var _state = props;
+    var _state = Object.assign({}, props);
     if (props) {
         Object.keys(props).forEach(function (key) {
             if (typeof props[key] === 'string') {
@@ -69,7 +69,8 @@ var bindingProps = function bindingProps(_ref, _ref2) {
                 // 绑定外部props
                 if (props[key].indexOf('@') !== -1) {
                     var _redirect = props[key].slice(1, props[key].length);
-                    _state['' + key] = getProps()[_redirect];
+                    var obj = {};
+                    _state['' + key] = getMountData()[_redirect];
                     return false;
                 }
             }
@@ -82,14 +83,13 @@ var componentFilter = function componentFilter(item, yakaApis, level, index) {
         getComponent = yakaApis.getComponent,
         getForm = yakaApis.getForm,
         getInitData = yakaApis.getInitData,
-        getProps = yakaApis.getProps;
+        getMountData = yakaApis.getMountData;
     var ele = item.ele,
         subs = item.subs,
         text = item.text,
         eleGroup = item.eleGroup,
         name = item.name;
 
-    if (name) {}
     var props = bindingProps(item, yakaApis);
     props.key = level + '.' + index;
     if (props.show === false) {
@@ -111,7 +111,7 @@ var componentFilter = function componentFilter(item, yakaApis, level, index) {
         return extend[ele](item, apis, props);
     }
     //常规组件
-    var children = bindingText(text, getState, getProps),
+    var children = bindingText(text, getState, getMountData),
         component = components[ele] ? components[ele] : ele;
     if (subs) {
         Object.assign(children, elementWalk(subs, yakaApis, props.key));
@@ -125,6 +125,7 @@ var componentFilter = function componentFilter(item, yakaApis, level, index) {
     return Element;
 };
 var elementWalk = function elementWalk(layouts, yakaApis, level) {
+
     if (!Array.isArray(layouts)) {
         throw Error('children must be an array!');
     }

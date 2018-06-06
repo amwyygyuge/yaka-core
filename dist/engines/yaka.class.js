@@ -32,7 +32,7 @@ var Yaka = exports.Yaka = function (_Component) {
         _classCallCheck(this, Yaka);
 
         // yaka props解构
-        var _this = _possibleConstructorReturn(this, (Yaka.__proto__ || Object.getPrototypeOf(Yaka)).call(this));
+        var _this = _possibleConstructorReturn(this, (Yaka.__proto__ || Object.getPrototypeOf(Yaka)).call(this, props));
 
         _initialiseProps.call(_this);
 
@@ -45,13 +45,13 @@ var Yaka = exports.Yaka = function (_Component) {
             _props$mountFunctions = props.mountFunctions,
             mountFunctions = _props$mountFunctions === undefined ? {} : _props$mountFunctions,
             _props$functionTempla = props.functionTemplates,
-            functionTemplates = _props$functionTempla === undefined ? {} : _props$functionTempla;
+            functionTemplates = _props$functionTempla === undefined ? {} : _props$functionTempla,
+            _props$mountData = props.mountData,
+            mountData = _props$mountData === undefined ? {} : _props$mountData;
         // config 对象解构
 
         var _config$init = config.init,
             init = _config$init === undefined ? {} : _config$init,
-            _config$layout = config.layout,
-            layout = _config$layout === undefined ? [] : _config$layout,
             _config$mounted = config.mounted,
             mounted = _config$mounted === undefined ? {} : _config$mounted,
             _config$eleGroup = config.eleGroup,
@@ -66,7 +66,7 @@ var Yaka = exports.Yaka = function (_Component) {
             watch = _init$watch === undefined ? {} : _init$watch,
             _init$formValue = init.formValue,
             formValue = _init$formValue === undefined ? {} : _init$formValue;
-        // 表单实力
+        // 表单对象
 
         _this.form = form;
         // 表单规则
@@ -77,11 +77,6 @@ var Yaka = exports.Yaka = function (_Component) {
         _this.eleGroup = eleGroup;
         // 挂载声明周期钩子
         _this.mounted = mounted;
-        // 布局
-        _this.layout = layout;
-        // 组件对象
-        _this.components = components;
-        _this.layoutComponents = layoutComponents;
         // 表单对象
         _this.form = form;
         // 表单初始值
@@ -89,11 +84,8 @@ var Yaka = exports.Yaka = function (_Component) {
         // state 初始化全局变量
         _this.state = state;
         _this.props = props;
-        // 特殊处理
-        _this.extend = _extend2.default;
-        // TODO   数据监听
-        _this.watch = {};
-        _this.logicState = {};
+        // 数据监听
+        _this.watch = watch;
         // 引擎api
         _this.yakaApis = {
             formValueSettingFunction: function formValueSettingFunction(val) {
@@ -115,15 +107,14 @@ var Yaka = exports.Yaka = function (_Component) {
                 return _this.form;
             },
             getComponent: function getComponent() {
-                return { components: _this.components, layoutComponents: _this.layoutComponents, extend: _this.extend };
+                return { components: components, layoutComponents: layoutComponents, extend: _extend2.default };
             },
             getInitData: function getInitData() {
                 return _this.formValue;
             },
-            getProps: function getProps() {
-                return _this.props;
+            getMountData: function getMountData() {
+                return _this.props.mountData;
             }
-
             // 挂载函数
         };_this.mountFunctions = _this.functionsWalk(functions, functionTemplates, mountFunctions, _this.yakaApis);
         return _this;
@@ -134,20 +125,40 @@ var Yaka = exports.Yaka = function (_Component) {
         value: function render() {
             return this.yakaRender();
         }
+    }, {
+        key: 'componentWillUpdate',
+
+        // 监听state变化
+
+
+        // // 数据map遍历 弃用
+        // dataMapWalk = (state = {}) => {
+        //     Object.assign(state, dataMap(this.dataMap, this.yakaApis))
+        // }
+
+        // // 状态遍历 弃用
+        // stateWalk = (layouts = [], initData = {}) => {
+        //     this.setState(stateWalk(layouts, initData))
+        // }
+
+        value: function componentWillUpdate(nextProps, nextState) {
+            if (this.state !== nextState) {
+                this.searchWatch(nextState);
+            }
+        }
+
+        // state比对函数
+
+
+        // 初始化
+
+        // 挂载结束后
+
 
         // 数据载入
 
 
         // 函数遍历
-
-
-        // 数据模型绑定和运行
-
-
-        // 数据map遍历
-
-
-        // 状态遍历
 
     }]);
 
@@ -158,11 +169,27 @@ var _initialiseProps = function _initialiseProps() {
     var _this2 = this;
 
     this.yakaRender = function () {
-        return (0, _model.layout)(_this2.layout, _this2.yakaApis, 1);
+        var _layout = _this2.props.config.layout;
+        return (0, _model.layout)(_layout, _this2.yakaApis, 1);
     };
 
     this.componentWillMount = function () {
         _this2.yakaInit();
+    };
+
+    this.searchWatch = function (nextState) {
+        var watch = _this2.watch,
+            state = _this2.state,
+            mountFunctions = _this2.mountFunctions;
+
+        Object.keys(state).forEach(function (key) {
+            if (state[key] !== nextState[key]) {
+                if (watch[key]) {
+                    var functionName = watch[key].run;
+                    mountFunctions[functionName] && mountFunctions[functionName]();
+                }
+            }
+        });
     };
 
     this.componentDidMount = function () {
@@ -179,8 +206,6 @@ var _initialiseProps = function _initialiseProps() {
         _this2.yakaMounted(mounted, mountFunctions);
         _this2.yakaDidMount();
     };
-
-    this.yakaDidMount = function () {};
 
     this.yakaInit = function () {
         _this2.yakaWillMount();
@@ -204,26 +229,37 @@ var _initialiseProps = function _initialiseProps() {
 
     this.yakaWillMount = function () {};
 
-    this.reset = function (nextProps) {
-        var config = nextProps.config;
-        var models = config.models,
-            functions = config.functions,
-            layouts = config.layouts,
-            initData = config.initData;
+    this.yakaDidMount = function () {};
 
+    this.reset = function (nextProps) {
+        var config = nextProps.config,
+            _nextProps$mountFunct = nextProps.mountFunctions,
+            mountFunctions = _nextProps$mountFunct === undefined ? {} : _nextProps$mountFunct,
+            _nextProps$functionTe = nextProps.functionTemplates,
+            functionTemplates = _nextProps$functionTe === undefined ? {} : _nextProps$functionTe;
+        // config 对象解构
+
+        var _config$init2 = config.init,
+            init = _config$init2 === undefined ? {} : _config$init2;
+        // init 对象解构
+
+        var _init$functions2 = init.functions,
+            functions = _init$functions2 === undefined ? {} : _init$functions2,
+            _init$state2 = init.state,
+            state = _init$state2 === undefined ? {} : _init$state2,
+            _init$watch2 = init.watch,
+            watch = _init$watch2 === undefined ? {} : _init$watch2,
+            _init$formValue2 = init.formValue,
+            formValue = _init$formValue2 === undefined ? {} : _init$formValue2;
+
+        _this2.watch = watch;
         _this2.config = config;
-        _this2.layouts = config.layout;
-        _this2.initData = config.initData || {};
-        Object.assign(_this2.state, config.global);
-        //函数遍历
-        _this2.functionsWalk(functions);
-        //state遍历
-        _this2.stateWalk(layouts, initData);
-        //载入初始表单数据
-        _this2.dataMapWalk(_this2.state);
+        _this2.formValue = formValue;
+        Object.assign(_this2.state, state);
         setTimeout(function () {
-            _this2.initForm(initData);
+            _this2.initForm(formValue);
         }, 0);
+        _this2.mountFunctions = _this2.functionsWalk(functions, functionTemplates, mountFunctions, _this2.yakaApis);
     };
 
     this.componentWillReceiveProps = function (nextProps) {
@@ -241,24 +277,5 @@ var _initialiseProps = function _initialiseProps() {
 
     this.functionsWalk = function (initFunctions, functionTemplates, mountFunctions, yakaApis) {
         return Object.assign((0, _model.registerMountFunctions)(mountFunctions, yakaApis), (0, _model.registerFunctions)(initFunctions, functionTemplates, yakaApis));
-    };
-
-    this.modelWalk = function () {
-        var initModels = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-        Object.assign(_this2.functions, (0, _model.models)(initModels, _this2.yakaApis));
-    };
-
-    this.dataMapWalk = function () {
-        var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-        Object.assign(state, (0, _model.dataMap)(_this2.dataMap, _this2.yakaApis));
-    };
-
-    this.stateWalk = function () {
-        var layouts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-        var initData = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-        _this2.setState((0, _model.stateWalk)(layouts, initData));
     };
 };

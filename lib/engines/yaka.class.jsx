@@ -1,16 +1,16 @@
 import React, { Component, Children } from 'react'
-import { registerMountFunctions, registerFunctions, models, dataMap, layout, stateWalk } from './model';
+import { registerMountFunctions, registerFunctions, layout } from './model';
 import extend from './../extend/'
 export class Yaka extends Component {
     constructor(props) {
-        super()
+        super(props)
         // yaka props解构
-        const { config, components = {}, layoutComponents = {}, form, mountFunctions = {}, functionTemplates = {} } = props
+        const { config, components = {}, layoutComponents = {}, form, mountFunctions = {}, functionTemplates = {}, mountData = {} } = props
         // config 对象解构
-        const { init = {}, layout = [], mounted = {}, eleGroup = {} } = config
+        const { init = {}, mounted = {}, eleGroup = {} } = config
         // init 对象解构
-        const { functions = {}, state = {}, watch = {},  formValue = {} } = init
-        // 表单实力
+        const { functions = {}, state = {}, watch = {}, formValue = {} } = init
+        // 表单对象
         this.form = form
         // 表单规则
         this.rules = {}
@@ -20,11 +20,6 @@ export class Yaka extends Component {
         this.eleGroup = eleGroup
         // 挂载声明周期钩子
         this.mounted = mounted
-        // 布局
-        this.layout = layout
-        // 组件对象
-        this.components = components
-        this.layoutComponents = layoutComponents
         // 表单对象
         this.form = form
         // 表单初始值
@@ -32,26 +27,22 @@ export class Yaka extends Component {
         // state 初始化全局变量
         this.state = state
         this.props = props
-        // 特殊处理
-        this.extend = extend
-        // TODO   数据监听
-        this.watch = {}
-        this.logicState = {}
+        // 数据监听
+        this.watch = watch
         // 引擎api
         this.yakaApis = {
-            formValueSettingFunction: (val) => this.form.setFieldsValue(val),
-            stateValueSettingFunction: (val) => this.setState(val),
-            formValueGettingFunction: (key) => this.form.getFieldValue(key),
+            formValueSettingFunction: val => this.form.setFieldsValue(val),
+            stateValueSettingFunction: val => this.setState(val),
+            formValueGettingFunction: key => this.form.getFieldValue(key),
             getState: () => this.state,
             getFunction: () => this.mountFunctions,
             getForm: () => this.form,
             getComponent: () => {
-                return { components: this.components, layoutComponents: this.layoutComponents, extend: this.extend }
+                return { components, layoutComponents, extend }
             },
             getInitData: () => this.formValue,
-            getProps: () => this.props,
+            getMountData: () => this.props.mountData
         }
-
         // 挂载函数
         this.mountFunctions = this.functionsWalk(functions, functionTemplates, mountFunctions, this.yakaApis)
     }
@@ -60,10 +51,32 @@ export class Yaka extends Component {
         return this.yakaRender()
     }
 
-    yakaRender = () => layout(this.layout, this.yakaApis, 1)
+    yakaRender = () => {
+        const _layout = this.props.config.layout
+        return layout(_layout, this.yakaApis, 1)
+    }
 
     componentWillMount = () => {
         this.yakaInit()
+    }
+    // 监听state变化
+    componentWillUpdate(nextProps, nextState) {
+        if (this.state !== nextState) {
+            this.searchWatch(nextState)
+        }
+    }
+
+    // state比对函数
+    searchWatch = nextState => {
+        const { watch, state, mountFunctions } = this
+        Object.keys(state).forEach(key => {
+            if (state[key] !== nextState[key]) {
+                if (watch[key]) {
+                    const functionName = watch[key].run
+                    mountFunctions[functionName] && mountFunctions[functionName]()
+                }
+            }
+        })
     }
 
     componentDidMount = () => {
@@ -74,15 +87,13 @@ export class Yaka extends Component {
         // 运行挂载之后的函数
         this.yakaMounted(mounted, mountFunctions)
         this.yakaDidMount()
-
     }
 
-    yakaDidMount = () => { }
-
+    // 初始化
     yakaInit = () => {
         this.yakaWillMount()
     }
-
+    // 挂载结束后
     yakaMounted = (mounted = {}, mountFunctions) => {
         const { run = {} } = mounted
         Object.keys(run).forEach(key => {
@@ -96,22 +107,20 @@ export class Yaka extends Component {
     }
 
     yakaWillMount = () => { }
-
+    yakaDidMount = () => { }
 
     reset = (nextProps) => {
-        const { config } = nextProps
-        const { models, functions, layouts, initData } = config
+        const { config, mountFunctions = {}, functionTemplates = {} } = nextProps
+        // config 对象解构
+        const { init = {} } = config
+        // init 对象解构
+        const { functions = {}, state = {}, watch = {}, formValue = {} } = init
+        this.watch = watch
         this.config = config
-        this.layouts = config.layout
-        this.initData = config.initData || {}
-        Object.assign(this.state, config.global)
-        //函数遍历
-        this.functionsWalk(functions)
-        //state遍历
-        this.stateWalk(layouts, initData)
-        //载入初始表单数据
-        this.dataMapWalk(this.state)
-        setTimeout(() => { this.initForm(initData) }, 0)
+        this.formValue = formValue
+        Object.assign(this.state, state)
+        setTimeout(() => { this.initForm(formValue) }, 0)
+        this.mountFunctions = this.functionsWalk(functions, functionTemplates, mountFunctions, this.yakaApis)
     }
 
     componentWillReceiveProps = (nextProps) => {
@@ -132,21 +141,15 @@ export class Yaka extends Component {
         )
     }
 
-    // 数据模型绑定和运行
-    modelWalk = (initModels = {}) => {
-        Object.assign(
-            this.functions,
-            models(initModels, this.yakaApis)
-        )
-    }
 
-    // 数据map遍历
-    dataMapWalk = (state = {}) => {
-        Object.assign(state, dataMap(this.dataMap, this.yakaApis))
-    }
+    // // 数据map遍历 弃用
+    // dataMapWalk = (state = {}) => {
+    //     Object.assign(state, dataMap(this.dataMap, this.yakaApis))
+    // }
 
-    // 状态遍历
-    stateWalk = (layouts = [], initData = {}) => {
-        this.setState(stateWalk(layouts, initData))
-    }
+    // // 状态遍历 弃用
+    // stateWalk = (layouts = [], initData = {}) => {
+    //     this.setState(stateWalk(layouts, initData))
+    // }
+
 }

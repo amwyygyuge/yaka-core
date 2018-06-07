@@ -4,6 +4,8 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 var _tool = require('./../../tool/');
 
 var _igrootFetch = require('igroot-fetch');
@@ -63,6 +65,9 @@ var modelFactory = function modelFactory(model, yakaApis) {
                         _val = getInitData()[value.slice(1, value.length)];
                     } else {
                         _val = formValueGettingFunction(value.slice(1, value.length));
+                    }
+                    if ((typeof _val === 'undefined' ? 'undefined' : _typeof(_val)) === 'object' && _val.key && _val.label) {
+                        _val = _val.key;
                     }
                     params[key] = _val;
                     return;

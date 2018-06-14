@@ -197,7 +197,7 @@ var _initialiseProps = function _initialiseProps() {
             if (state[key] !== nextState[key]) {
                 if (watch[key]) {
                     var functionName = watch[key].run;
-                    mountFunctions[functionName] && mountFunctions[functionName]();
+                    mountFunctions[functionName] && mountFunctions[functionName](nextState[key]);
                 }
             }
         });
@@ -231,7 +231,7 @@ var _initialiseProps = function _initialiseProps() {
         Object.keys(run).forEach(function (key) {
             var _funtion = mountFunctions[key];
             if (_funtion) {
-                _funtion();
+                _funtion(run[key]);
             } else {
                 console.error('mounted run ' + key + ' is not a defined!');
             }

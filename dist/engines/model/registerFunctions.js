@@ -4,10 +4,6 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _mountFunctions = require('./mountFunctions');
-
-var _mountFunctions2 = _interopRequireDefault(_mountFunctions);
-
 var _function_templates = require('./function_templates');
 
 var _function_templates2 = _interopRequireDefault(_function_templates);
@@ -33,7 +29,6 @@ var registerFunctions = function registerFunctions() {
             };
         } else {
             _functions[key] = function (e) {};
-
             console.error('Function ' + key + ' templates are not defined!');
         }
     });

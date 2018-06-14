@@ -78,7 +78,7 @@ export class Yaka extends PureComponent {
             if (state[key] !== nextState[key]) {
                 if (watch[key]) {
                     const functionName = watch[key].run
-                    mountFunctions[functionName] && mountFunctions[functionName]()
+                    mountFunctions[functionName] && mountFunctions[functionName](nextState[key])
                 }
             }
         })
@@ -104,7 +104,7 @@ export class Yaka extends PureComponent {
         Object.keys(run).forEach(key => {
             const _funtion = mountFunctions[key]
             if (_funtion) {
-                _funtion()
+                _funtion(run[key])
             } else {
                 console.error(`mounted run ${key} is not a defined!`)
             }

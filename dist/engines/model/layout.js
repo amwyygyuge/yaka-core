@@ -10,7 +10,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _tool = require('./../../tool');
 
-var _constants = require('constants');
+var _index = require('./../../plugIn/index');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -18,7 +18,7 @@ var bindingText = function bindingText(text, getState, getMountData) {
     var children = [];
     if (text) {
         if ((0, _tool.isReadState)(text)) {
-            // #
+            // $全局数据
             var _text = (0, _tool.readState)(_text, getState());
             children.push(_text);
         } else {
@@ -44,8 +44,7 @@ var componentCheck = function componentCheck(ele) {
     }
 };
 var bindingProps = function bindingProps(_ref, _ref2) {
-    var name = _ref.name,
-        _ref$props = _ref.props,
+    var _ref$props = _ref.props,
         props = _ref$props === undefined ? {} : _ref$props;
     var getState = _ref2.getState,
         getFunction = _ref2.getFunction,
@@ -69,7 +68,6 @@ var bindingProps = function bindingProps(_ref, _ref2) {
                 // 绑定外部props
                 if (props[key].indexOf('@') !== -1) {
                     var _redirect = props[key].slice(1, props[key].length);
-                    var obj = {};
                     _state['' + key] = getMountData()[_redirect];
                     return false;
                 }
@@ -78,12 +76,14 @@ var bindingProps = function bindingProps(_ref, _ref2) {
     }
     return _state;
 };
-var componentFilter = function componentFilter(item, yakaApis, level, index) {
+var componentFilter = function componentFilter(item, yakaApis, level, index, formCreatFunc) {
     var getState = yakaApis.getState,
         getComponent = yakaApis.getComponent,
         getForm = yakaApis.getForm,
         getInitData = yakaApis.getInitData,
-        getMountData = yakaApis.getMountData;
+        getMountData = yakaApis.getMountData,
+        isDevelop = yakaApis.isDevelop,
+        getPlugIn = yakaApis.getPlugIn;
     var ele = item.ele,
         subs = item.subs,
         text = item.text,
@@ -91,10 +91,10 @@ var componentFilter = function componentFilter(item, yakaApis, level, index) {
         name = item.name;
 
     var props = bindingProps(item, yakaApis);
-    props.key = level + '.' + index;
     if (props.show === false) {
         return null;
     }
+    props.key = level + '.' + index;
 
     var _getComponent = getComponent(),
         components = _getComponent.components,
@@ -122,18 +122,33 @@ var componentFilter = function componentFilter(item, yakaApis, level, index) {
     } else {
         Element = _react2.default.createElement(component, props, children);
     }
+    // 插件扩展
+    var getPlugIns = getPlugIn();
+    var eleConfig = {
+        config: item,
+        key: props.key
+    };
+    var plugInApi = {
+        debug: isDevelop(),
+        formCreatFunc: formCreatFunc,
+        yakaApis: yakaApis
+    };
+    getPlugIns.forEach(function (func) {
+        Element = Element && func(Element, eleConfig, plugInApi);
+    });
+    // 开发模式
+    if (isDevelop()) {
+        Element = Element && (0, _index.json_preview)(Element, eleConfig, plugInApi);
+    }
     return Element;
 };
-var elementWalk = function elementWalk(layouts, yakaApis, level) {
-
-    if (!Array.isArray(layouts)) {
-        throw Error('children must be an array!');
-    }
+var elementWalk = function elementWalk(layouts, yakaApis, level, formCreatFunc) {
+    if (!Array.isArray(layouts)) throw Error('children must be an array!');
     return layouts.map(function (item, index) {
         var ele = item.ele;
 
         if (!ele || !componentCheck(ele)) return false;
-        return componentFilter(item, yakaApis, level, index);
+        return componentFilter(item, yakaApis, level, index, formCreatFunc);
     });
 };
 exports.default = elementWalk;

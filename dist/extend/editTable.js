@@ -22,9 +22,10 @@ exports.default = function (item, _ref, props) {
         exportExcel = props.exportExcel,
         key = props.key;
 
+    var _value = initData[name] ? initData[name] : value ? value : null;
     var _props = {
         columns: columns,
-        value: initData[name] ? initData[name] : value ? value : null,
+        value: _value,
         ele: item,
         key: key + '.' + name,
         scrollWidth: scrollWidth,

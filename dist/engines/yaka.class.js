@@ -9,8 +9,6 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _react = require('react');
 
-var _react2 = _interopRequireDefault(_react);
-
 var _model = require('./model');
 
 var _extend = require('./../extend/');
@@ -47,7 +45,9 @@ var Yaka = exports.Yaka = function (_Component) {
             _props$functionTempla = props.functionTemplates,
             functionTemplates = _props$functionTempla === undefined ? {} : _props$functionTempla,
             _props$mountData = props.mountData,
-            mountData = _props$mountData === undefined ? {} : _props$mountData;
+            mountData = _props$mountData === undefined ? {} : _props$mountData,
+            _props$plugIn = props.plugIn,
+            plugIn = _props$plugIn === undefined ? [] : _props$plugIn;
         // config 对象解构
 
         var _config$init = config.init,
@@ -75,6 +75,8 @@ var Yaka = exports.Yaka = function (_Component) {
         _this.config = config;
         // 代码片段
         _this.eleGroup = eleGroup;
+        // 插件
+        _this.plugIn = plugIn;
         // 挂载声明周期钩子
         _this.mounted = mounted;
         // 表单对象
@@ -86,6 +88,9 @@ var Yaka = exports.Yaka = function (_Component) {
         _this.props = props;
         // 数据监听
         _this.watch = watch;
+        _this.debug = function () {
+            return props.debug ? props.debug(_this.config.layout) : false;
+        };
         // 引擎api
         _this.yakaApis = {
             formValueSettingFunction: function formValueSettingFunction(val) {
@@ -114,6 +119,12 @@ var Yaka = exports.Yaka = function (_Component) {
             },
             getMountData: function getMountData() {
                 return _this.props.mountData;
+            },
+            isDevelop: function isDevelop() {
+                return _this.debug;
+            },
+            getPlugIn: function getPlugIn() {
+                return _this.plugIn;
             }
             // 挂载函数
         };_this.mountFunctions = _this.functionsWalk(functions, functionTemplates, mountFunctions, _this.yakaApis);
@@ -263,7 +274,7 @@ var _initialiseProps = function _initialiseProps() {
     };
 
     this.componentWillReceiveProps = function (nextProps) {
-        var debug = _this2.props.debug;
+        var debug = _this2.debug;
 
         if (debug && (nextProps.config.length !== _this2.props.config.length || JSON.stringify(nextProps.config) !== JSON.stringify(_this2.props.config))) {
             _this2.reset(nextProps);

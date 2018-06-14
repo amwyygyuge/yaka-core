@@ -5,9 +5,10 @@ export default function (item, { yakaApis, elementWalk, componentCheck, initData
     const { EditTable } = components
     const { name } = item
     const { columns, value, scrollWidth, add, remove, exportExcel, key } = props
+    const _value = initData[name] ? initData[name] : (value ? value : null)
     const _props = {
         columns,
-        value: initData[name] ? initData[name] : value ? value : null,
+        value: _value,
         ele: item,
         key: `${key}.${name}`,
         scrollWidth,

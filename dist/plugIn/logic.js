@@ -3,9 +3,8 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-var logic = function logic(_ref, _ref2) {
-    var Element = _ref.Element,
-        config = _ref.config,
+var logic = function logic(Element, _ref, _ref2) {
+    var config = _ref.config,
         key = _ref.key;
     var debug = _ref2.debug,
         formCreatFunc = _ref2.formCreatFunc,
@@ -14,7 +13,7 @@ var logic = function logic(_ref, _ref2) {
     if (config.hide) {
         var formValueGettingFunction = yakaApis.formValueGettingFunction;
 
-        if (formValueGettingFunction('name') === "fuck") {
+        if (formValueGettingFunction('name') === "1000") {
             return null;
         }
     }

@@ -1,7 +1,7 @@
-import { Component } from 'react'
+import { PureComponent } from 'react'
 import { registerMountFunctions, registerFunctions, layout } from './model';
 import extend from './../extend/'
-export class Yaka extends Component {
+export class Yaka extends PureComponent {
     constructor(props) {
         super(props)
         // yaka props解构

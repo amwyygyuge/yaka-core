@@ -73,8 +73,8 @@ var json_preview = function json_preview(Element, _ref, _ref2) {
                     {
                         onPressEnter: function onPressEnter(e) {
                             e.preventDefault();
-                            var config = JSON.parse(e.target.value);
-                            changeConfig(config, config);
+                            var newConfig = JSON.parse(e.target.value);
+                            changeConfig(newConfig, config);
                         },
                         autosize: true
                     },

@@ -1,11 +1,11 @@
-import React, { Component, Children } from 'react'
-import { Button, Form } from 'igroot'
+import React from 'react'
+import { createForm } from 'rc-form';
 import { Yaka } from './../yaka.class'
 export class YakaForm extends Yaka {
     render() {
         return <div>{this.yakaRender()}
             {this.props.onSubmit ? <div style={{ textAlign: 'center', margin: '15px 0' }}>
-                <Button type='primary' onClick={this.onSubmit}>提交</Button>
+                <button type='primary' onClick={this.onSubmit}>提交</button>
             </div> : null}
         </div>
     }
@@ -30,7 +30,7 @@ export class YakaForm extends Yaka {
     }
 }
 
-export default Form.create()(YakaForm)
+export default createForm()(YakaForm)
 
 
 

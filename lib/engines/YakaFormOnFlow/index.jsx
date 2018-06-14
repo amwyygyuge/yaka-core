@@ -1,5 +1,4 @@
-import React, { Component, Children } from 'react'
-import { Form } from 'igroot'
+import { createForm } from 'rc-form';
 import { Yaka } from './../yaka.class'
 const rulesWalk = layouts => {
     if (!Array.isArray(layouts)) {
@@ -87,7 +86,7 @@ export class YakaFormOnFlow extends Yaka {
         onGetForm && onGetForm(this, config)
     }
 }
-export default Form.create({
+export default createForm({
     onValuesChange: (props, values) => {
         if (IgrootConfigFormThis.props.edit === true) {
             const editNow = IgrootConfigFormThis.props.form.getFieldsValue()

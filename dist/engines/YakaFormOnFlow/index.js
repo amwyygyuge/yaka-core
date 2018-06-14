@@ -5,19 +5,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.YakaFormOnFlow = undefined;
 
-var _form = require('igroot/lib/form');
-
-var _form2 = _interopRequireDefault(_form);
-
-require('igroot/lib/form/style');
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
+var _rcForm = require('rc-form');
 
 var _yaka = require('./../yaka.class');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -129,7 +119,7 @@ var YakaFormOnFlow = exports.YakaFormOnFlow = function (_Yaka) {
     return YakaFormOnFlow;
 }(_yaka.Yaka);
 
-exports.default = _form2.default.create({
+exports.default = (0, _rcForm.createForm)({
     onValuesChange: function onValuesChange(props, values) {
         if (IgrootConfigFormThis.props.edit === true) {
             var editNow = IgrootConfigFormThis.props.form.getFieldsValue();

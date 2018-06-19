@@ -5,21 +5,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.YakaFormOnFlow = undefined;
 
-var _form = require('igroot/lib/form');
-
-var _form2 = _interopRequireDefault(_form);
-
-require('igroot/lib/form/style');
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
+var _rcForm = require('rc-form');
 
 var _yaka = require('./../yaka.class');
-
-var _model = require('./../model');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -27,6 +15,46 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var rulesWalk = function rulesWalk(layouts) {
+    if (!Array.isArray(layouts)) {
+        throw Error('children must be an array!');
+    }
+    var rules = {};
+    layouts.forEach(function (ele) {
+        if (ele.rules) {
+            rules[ele.name] = {
+                component: ele.component,
+                rules: ele.rules
+            };
+            return;
+        }
+        if (ele.component === 'Form') {
+            ele.children.forEach(function (col) {
+                rules[col.name] = {
+                    component: col.component,
+                    rules: col.rules
+                };
+            });
+            return;
+        }
+
+        if (ele.component === 'EditTable') {
+            var tableRules = {};
+            ele.props.columns.forEach(function (col) {
+                tableRules[col.name] = {
+                    component: col.component,
+                    rules: col.rules
+                };
+            });
+            rules[ele.name] = tableRules;
+            return;
+        }
+        if (ele.children) {
+            Object.assign(rules, rulesWalk(ele.children));
+        }
+    });
+    return rules;
+};
 var IgrootConfigFormThis = void 0;
 function setStorageItem(key, value) {
     window.localStorage && window.localStorage.setItem(key, value);
@@ -43,7 +71,7 @@ var YakaFormOnFlow = exports.YakaFormOnFlow = function (_Yaka) {
         _this.rulesWalk = function () {
             var layouts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
 
-            Object.assign(_this.rules, (0, _model.rules)(layouts));
+            Object.assign(_this.rules, rules(layouts));
             _this.props.getFormData && _this.props.getFormData(_this.rules);
         };
 
@@ -91,7 +119,7 @@ var YakaFormOnFlow = exports.YakaFormOnFlow = function (_Yaka) {
     return YakaFormOnFlow;
 }(_yaka.Yaka);
 
-exports.default = _form2.default.create({
+exports.default = (0, _rcForm.createForm)({
     onValuesChange: function onValuesChange(props, values) {
         if (IgrootConfigFormThis.props.edit === true) {
             var editNow = IgrootConfigFormThis.props.form.getFieldsValue();

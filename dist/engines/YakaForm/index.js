@@ -5,25 +5,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.YakaForm = undefined;
 
-var _form = require('igroot/lib/form');
-
-var _form2 = _interopRequireDefault(_form);
-
-var _button = require('igroot/lib/button');
-
-var _button2 = _interopRequireDefault(_button);
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-require('igroot/lib/form/style');
-
-require('igroot/lib/button/style');
 
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _model = require('./../model');
+var _rcForm = require('rc-form');
 
 var _yaka = require('./../yaka.class');
 
@@ -75,12 +63,12 @@ var YakaForm = exports.YakaForm = function (_Yaka) {
             return _react2.default.createElement(
                 'div',
                 null,
-                (0, _model.layout)(this.layouts, this.yakaApis),
+                this.yakaRender(),
                 this.props.onSubmit ? _react2.default.createElement(
                     'div',
                     { style: { textAlign: 'center', margin: '15px 0' } },
                     _react2.default.createElement(
-                        _button2.default,
+                        'button',
                         { type: 'primary', onClick: this.onSubmit },
                         '\u63D0\u4EA4'
                     )
@@ -92,4 +80,4 @@ var YakaForm = exports.YakaForm = function (_Yaka) {
     return YakaForm;
 }(_yaka.Yaka);
 
-exports.default = _form2.default.create()(YakaForm);
+exports.default = (0, _rcForm.createForm)()(YakaForm);

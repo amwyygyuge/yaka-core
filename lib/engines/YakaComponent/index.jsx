@@ -1,7 +1,6 @@
-import React, { Component, Children } from 'react'
-import { Form } from 'igroot'
+import { createForm } from 'rc-form';
 import { Yaka } from './../yaka.class'
-export default Form.create()(Yaka)
+export default createForm()(Yaka)
 
 
 

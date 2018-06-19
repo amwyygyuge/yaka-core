@@ -4,8 +4,12 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 // 数据流入解析
-var streamTo = function streamTo(arr, obj, target) {
-    if (Array.isArray(arr) && arr.length === 0) return obj;
+var streamTo = function streamTo() {
+    var arr = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+    var obj = arguments[1];
+    var target = arguments[2];
+
+    if (arr.length === 0) return obj;
     var _obj = {};
     if (target !== undefined) {
         _obj[arr.pop()] = target;
@@ -15,16 +19,32 @@ var streamTo = function streamTo(arr, obj, target) {
     return streamTo(arr, _obj);
 };
 // 数据流出解析
-var streamForm = function streamForm(arr, obj, data) {
-    if (Array.isArray(arr) && arr.length === 0) return obj;
+var streamForm = function streamForm() {
+    var arr = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+    var obj = arguments[1];
+    var data = arguments[2];
+
+    if (arr.length === 0) return obj;
     var _obj = {};
+    var str = arr.shift();
+    var keys = str.split('[');
     if (data !== undefined) {
-        _obj = data[arr.shift()];
+        if (keys.length === 1) {
+            _obj = data[keys[0]];
+        } else {
+            var num = parseInt(keys[1].replace(']', ''), 0);
+            _obj = data[keys[0]][num];
+        }
     } else {
         if (obj === undefined) {
             return null;
         } else {
-            _obj = obj[arr.shift()];
+            if (keys.length === 1) {
+                _obj = obj[keys[0]];
+            } else {
+                var _num = parseInt(keys[1].replace(']', ''), 0);
+                _obj = obj[keys[0]][_num];
+            }
         }
     }
     return streamForm(arr, _obj);

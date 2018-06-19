@@ -9,4 +9,5 @@ export default function (ele, { components, form }, props) {
     })(
         <Editor {...props} />
     )
+    
 }

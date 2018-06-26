@@ -76,19 +76,22 @@ var bindingProps = function bindingProps(_ref, _ref2) {
     }
     return _state;
 };
-var componentFilter = function componentFilter(item, yakaApis, level, index, formCreatFunc) {
+var componentFctory = function componentFctory(_ref3) {
+    var item = _ref3.item,
+        yakaApis = _ref3.yakaApis,
+        level = _ref3.level,
+        index = _ref3.index;
+
+    var Element = null;
     var getState = yakaApis.getState,
         getComponent = yakaApis.getComponent,
         getForm = yakaApis.getForm,
         getInitData = yakaApis.getInitData,
-        getMountData = yakaApis.getMountData,
-        isDevelop = yakaApis.isDevelop,
-        getPlugIn = yakaApis.getPlugIn;
+        getMountData = yakaApis.getMountData;
     var ele = item.ele,
         subs = item.subs,
         text = item.text,
-        eleGroup = item.eleGroup,
-        name = item.name;
+        eleGroup = item.eleGroup;
 
     var props = bindingProps(item, yakaApis);
     if (props.show === false) {
@@ -104,11 +107,13 @@ var componentFilter = function componentFilter(item, yakaApis, level, index, for
     var apis = { yakaApis: yakaApis, elementWalk: elementWalk, componentCheck: componentCheck, initData: getInitData(), components: components, form: getForm(), bindingProps: bindingProps
         //布局组件
     };if (layoutComponents[ele]) {
-        return layoutComponents[ele](item, apis, props);
+        Element = layoutComponents[ele](item, apis, props);
+        return { Element: Element, key: props.key };
     }
     //组件扩展
     if (extend[ele]) {
-        return extend[ele](item, apis, props);
+        Element = extend[ele](item, apis, props);
+        return { Element: Element, key: props.key };
     }
     //常规组件
     var children = bindingText(text, getState, getMountData),
@@ -116,24 +121,32 @@ var componentFilter = function componentFilter(item, yakaApis, level, index, for
     if (subs) {
         Object.assign(children, elementWalk(subs, yakaApis, props.key));
     }
-    var Element = null;
     if (ele === 'Input' || ele === 'input' || ele === 'TextArea') {
         Element = _react2.default.createElement(component, props);
     } else {
         Element = _react2.default.createElement(component, props, children);
     }
-    // 插件扩展
-    var getPlugIns = getPlugIn();
+    return { Element: Element, key: props.key };
+};
+
+var componentPlugin = function componentPlugin(Element, key, _ref4) {
+    var item = _ref4.item,
+        yakaApis = _ref4.yakaApis,
+        formCreatFunc = _ref4.formCreatFunc;
+    var isDevelop = yakaApis.isDevelop,
+        getPlugIn = yakaApis.getPlugIn;
+
+    var plugIns = getPlugIn();
     var eleConfig = {
         config: item,
-        key: props.key
+        key: key
     };
     var plugInApi = {
         debug: isDevelop(),
         formCreatFunc: formCreatFunc,
         yakaApis: yakaApis
     };
-    getPlugIns.forEach(function (func) {
+    plugIns.forEach(function (func) {
         Element = Element && func(Element, eleConfig, plugInApi);
     });
     // 开发模式
@@ -142,13 +155,34 @@ var componentFilter = function componentFilter(item, yakaApis, level, index, for
     }
     return Element;
 };
-var elementWalk = function elementWalk(layouts, yakaApis, level, formCreatFunc) {
-    if (!Array.isArray(layouts)) throw Error('children must be an array!');
-    return layouts.map(function (item, index) {
-        var ele = item.ele;
 
-        if (!ele || !componentCheck(ele)) return false;
-        return componentFilter(item, yakaApis, level, index, formCreatFunc);
+var componentFilter = function componentFilter(item, yakaApis, level, index, formCreatFunc, parent) {
+    var isDevelop = yakaApis.isDevelop;
+    var ele = item.ele;
+
+    var _Element = null;
+    if (!ele || !componentCheck(ele)) {
+        _Element = (0, _index.quick_setup)(null, { config: item, key: level + '.' + index, parent: parent }, { debug: isDevelop(), yakaApis: yakaApis, formCreatFunc: formCreatFunc });
+    } else {
+        // 配置转化
+        var _componentFctory = componentFctory({ item: item, yakaApis: yakaApis, level: level, index: index }),
+            Element = _componentFctory.Element,
+            key = _componentFctory.key;
+        // 插件扩展
+
+
+        _Element = componentPlugin(Element, key, { item: item, yakaApis: yakaApis, formCreatFunc: formCreatFunc });
+    }
+    return _Element;
+};
+var elementWalk = function elementWalk(layouts, yakaApis, level, formCreatFunc, parent) {
+    if (!Array.isArray(layouts)) throw Error('children must be an array!');
+    // const length = layouts.length
+    // if (Object.keys(layouts[length - 1]).length !== 0) {
+    //     layouts.push({})
+    // }
+    return layouts.map(function (item, index) {
+        return componentFilter(item, yakaApis, level, index, formCreatFunc, parent);
     });
 };
 exports.default = elementWalk;

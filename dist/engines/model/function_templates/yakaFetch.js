@@ -29,7 +29,10 @@ var yakaFetch = function yakaFetch(model, e, yakaApis) {
     var getState = yakaApis.getState,
         getMountData = yakaApis.getMountData,
         formValueGettingFunction = yakaApis.formValueGettingFunction,
-        getInitData = yakaApis.getInitData;
+        getInitData = yakaApis.getInitData,
+        getForm = yakaApis.getForm;
+    // const { getFieldsValue } = getForm()
+    // console.log(getFieldsValue());
 
     Object.keys(headers).forEach(function (key) {
         var val = headers[key] ? headers[key].toString() : '';
@@ -44,50 +47,47 @@ var yakaFetch = function yakaFetch(model, e, yakaApis) {
         }
     });
     return function () {
-        var auto = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
-
+        var _params = {};
         if (params) {
             Object.keys(params).forEach(function (key) {
-                var value = params[key] ? params[key].toString() : null;
+                var value = params[key] ? params[key].toString() : '';
                 if ((0, _tool.isReadState)(value)) {
                     var val = (0, _tool.readState)(value, getState());
-                    params[key] = val;
+                    _params[key] = val;
                     return;
                 }
-                if (value && value.indexOf('#') !== -1) {
-                    var _val = '';
-                    if (auto) {
-                        _val = getInitData()[value.slice(1, value.length)];
-                    } else {
-                        _val = formValueGettingFunction(value.slice(1, value.length));
-                    }
+                if (value.indexOf('#') !== -1) {
+                    var _val = formValueGettingFunction(value.slice(1, value.length));
+                    // if (auto) {
+                    //     val = getInitData()[value.slice(1, value.length)]
+                    // } else {
+                    //     val = formValueGettingFunction(value.slice(1, value.length))
+                    // }
                     if ((typeof _val === 'undefined' ? 'undefined' : _typeof(_val)) === 'object' && _val.key && _val.label) {
                         _val = _val.key;
                     }
-                    params[key] = _val;
+                    _params[key] = _val;
                     return;
                 }
-                params[key] = value;
+                _params[key] = value;
             });
         }
         if (type === 'get' || type === 'restful') {
-            (0, _igrootFetch2.default)(url, { headers: headers, handleHttpErrors: function handleHttpErrors() {} }).get(params).then(function (res) {
+            (0, _igrootFetch2.default)(url, { headers: headers, handleHttpErrors: function handleHttpErrors() {} }).get(_params).then(function (res) {
                 var code = res.code.toString();
                 if (code && code !== '0') {
                     return;
                 }
-
-                streams && (0, _stream2.default)(streams, res, yakaApis);
+                streams && (0, _stream2.default)(streams, res, yakaApis)();
             });
         }
         if (type === 'post') {
-            (0, _igrootFetch2.default)(url, { headers: headers, handleHttpErrors: function handleHttpErrors() {} }).post(params).then(function (res) {
+            (0, _igrootFetch2.default)(url, { headers: headers, handleHttpErrors: function handleHttpErrors() {} }).post(_params).then(function (res) {
                 var code = res.code.toString();
                 if (code && code !== '0') {
                     return;
                 }
-
-                streams && (0, _stream2.default)(streams, res, yakaApis);
+                streams && (0, _stream2.default)(streams, res, yakaApis)();
             });
         }
     };

@@ -34,11 +34,13 @@ var streamFilter = function streamFilter(streamIn, data) {
         case 'boolean':
             return streamIn;
         case 'string':
-            if (streamIn === 'self') {
-                return data;
-            } else {
-                value = streamIn.indexOf('.') !== -1 ? (0, _tool.streamForm)(streamIn.split('.'), {}, data) : streamIn;
+            if (streamIn.indexOf('.') !== -1) {
+                var arr = streamIn.split('.');
+                arr.shift();
+                value = (0, _tool.streamForm)(arr, {}, data);
                 return value;
+            } else {
+                return data;
             }
         default:
             return value;

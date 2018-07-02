@@ -88,9 +88,9 @@ var Yaka = exports.Yaka = function (_PureComponent) {
         _this.props = props;
         // 数据监听
         _this.watch = watch;
-        _this.debug = function () {
-            return props.debug ? props.debug(_this.config.layout) : false;
-        };
+        _this.debug = props.debug !== undefined ? function () {
+            return props.debug(_this.config.layout);
+        } : false;
         // 引擎api
         _this.yakaApis = {
             formValueSettingFunction: function formValueSettingFunction(val) {

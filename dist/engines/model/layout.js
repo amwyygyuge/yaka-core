@@ -152,6 +152,10 @@ var componentPlugin = function componentPlugin(Element, key, _ref4) {
     // 开发模式
     if (isDevelop()) {
         Element = Element && (0, _index.json_preview)(Element, eleConfig, plugInApi);
+    } else {
+        if (formCreatFunc) {
+            Element = formCreatFunc(Element);
+        }
     }
     return Element;
 };

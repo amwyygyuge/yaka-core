@@ -31,7 +31,7 @@ export class Yaka extends PureComponent {
         this.props = props
         // 数据监听
         this.watch = watch
-        this.debug = () => props.debug ? props.debug(this.config.layout) : false
+        this.debug = props.debug !== undefined ? () => props.debug(this.config.layout) : false
         // 引擎api
         this.yakaApis = {
             formValueSettingFunction: val => this.form.setFieldsValue(val),
